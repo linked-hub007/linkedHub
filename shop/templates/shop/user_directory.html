@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedHub - User Directory</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="{% static 'images/aim.png' %}">
+    
+    <!-- Custom styles -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/user_directory.css' %}" rel="stylesheet" />
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header_section">
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <img src="{% static 'images/logo.png' %}" alt="LinkedHub Logo" />
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+                        <ul class="navbar-nav">
+                            <li class="nav-item ">
+                                <a class="nav-link" href="{% url 'base' %}">Home <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'about' %}">About</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{% url 'user_directory' %}">Members</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <!-- Header Section -->
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h1 class="main-title">LinkedHub Community</h1>
+                <p class="subtitle">Connect with professionals and students worldwide</p>
+            </div>
+        </div>
+
+        <!-- Stats Card -->
+        <div class="row mb-4">
+            <div class="col-md-8 mx-auto">
+                <div class="stats-card">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <h3>{{ total_users }}</h3>
+                            <p>Total Members</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>{{ active_count }}</h3>
+                            <p>Active Today</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>{{ new_count }}</h3>
+                            <p>New This Week</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="row mb-4">
+            <div class="col-md-8 mx-auto">
+                <form method="get" action="">
+                    <div class="search-container">
+                        <div class="search-wrapper">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" name="search" class="search-input" 
+                                   placeholder="Search by name, username, or skills..." value="{{ search_query }}">
+                        </div>
+                        <div class="search-footer">
+                            <div class="search-results">
+                                <small>Showing {{ users|length }} results</small>
+                            </div>
+                            <div class="search-actions">
+                                <button type="submit" class="btn-filter">
+                                    <i class="fas fa-filter"></i> Filter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- User Cards -->
+        <div class="row">
+            <div class="col-12">
+                {% for user in users %}
+                <div class="user-card">
+                    <div class="user-info-section">
+                        {% if user.profile.profile_picture %}
+                            <img src="{{ user.profile.profile_picture.url }}" 
+                                 class="profile-pic" 
+                                 alt="{{ user.username }}">
+                        {% else %}
+                            <div class="default-profile-pic">
+                                {{ user.username|first|upper }}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="user-details">
+                            <h5>{{ user.get_full_name|default:user.username }}</h5>
+                            <p class="username">@{{ user.username }}</p>
+                            <div class="view-count">
+                                <i class="fas fa-eye"></i> {{ user.profile_views|default:0 }} views
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="user-actions">
+                        {% if user.educations.exists %}
+                        <span class="education-badge">
+                            <i class="fas fa-graduation-cap"></i> {{ user.educations.first.institution }}
+                        </span>
+                        {% endif %}
+                        <a href="{% url 'public_profile' user.username %}" class="btn-view-profile">View Profile</a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-state">
+                    <i class="fas fa-user-slash"></i>
+                    <h4>No users found</h4>
+                    <p>Try adjusting your search query</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+       
+        <!-- Pagination -->
+        {% if users.has_other_pages %}
+        <div class="row mt-4">
+            <div class="col-12 d-flex justify-content-center">
+                <nav aria-label="Page navigation" class="pagination-nav">
+                    <ul class="pagination">
+                        {% if users.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ users.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        
+                        {% for num in users.paginator.page_range %}
+                            {% if users.number == num %}
+                            <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                            {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}">{{ num }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if users.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ users.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer_section">
+        <div class="container">
+            <p>&copy; <span id="displayYear"></span> All rights reserved LinkedHub.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/displayYear.js' %}"></script>
+</body>
+</html>

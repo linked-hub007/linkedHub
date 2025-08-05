@@ -1,0 +1,140 @@
+{% load static %}
+{% load socialaccount %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - LinkedHub</title>
+    <link rel="icon" type="image/png" href="{% static 'images/aim.png' %}">
+    <!-- Add your custom CSS file -->
+    <link rel="stylesheet" href="{% static 'css/signup-account.css' %}">
+</head>
+<body>
+    <div class="main-content">
+        <div class="signup-container">
+            <div class="auth-header">                
+                <img src="{% static 'images/logo.png' %}" alt="LinkedHub Logo" class="logo-img">
+                <h1>Sign Up</h1>
+                <p>Create your LinkedHub account</p>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" onclick="this.parentElement.style.display='none'" aria-label="Close">&times;</button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form class="signup" method="post" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+                
+                <div class="form-floating">
+                    {{ form.email }}
+                    <label for="{{ form.email.id_for_label }}">Email Address</label>
+                    {% if form.email.errors %}
+                        <div class="text-danger">
+                            {% for error in form.email.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-floating">
+                    {{ form.username }}
+                    <label for="{{ form.username.id_for_label }}">Username</label>
+                    {% if form.username.errors %}
+                        <div class="text-danger">
+                            {% for error in form.username.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-floating">
+                    {{ form.phone_number }}
+                    <label for="{{ form.phone_number.id_for_label }}">Phone Number</label>
+                    <small class="form-text text-muted">Format: +919876543210</small>
+                    {% if form.phone_number.errors %}
+                        <div class="text-danger">
+                            {% for error in form.phone_number.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-floating">
+                    {{ form.password1 }}
+                    <label for="{{ form.password1.id_for_label }}">Password</label>
+                    {% if form.password1.errors %}
+                        <div class="text-danger">
+                            {% for error in form.password1.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-floating">
+                    {{ form.password2 }}
+                    <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                    {% if form.password2.errors %}
+                        <div class="text-danger">
+                            {% for error in form.password2.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="termsCheckbox" required>
+                    <label for="termsCheckbox">
+                        I agree to the <a href="{% url 'terms' %}" target="_blank">Terms & Privacy Policy</a>.
+                    </label>
+                </div>
+
+                <button type="submit" id="signupBtn" class="btn-primary" disabled>
+                    Sign Up
+                </button>
+
+                <div class="divider">
+                    <span>Or continue with</span>
+                </div>
+
+                <a href="{% provider_login_url 'google' process='signup' %}" id="googleBtn" class="btn-google disabled-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48">
+                        <defs>
+                            <path id="a" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/>
+                        </defs>
+                        <clipPath id="b"><use xlink:href="#a" overflow="visible"/></clipPath>
+                        <path clip-path="url(#b)" fill="#FBBC05" d="M0 37V11l17 13z"/>
+                        <path clip-path="url(#b)" fill="#EA4335" d="M0 11l17 13 7-6.1L48 14V0H0z"/>
+                        <path clip-path="url(#b)" fill="#34A853" d="M0 37l30-23 7.9 1L48 0v48H0z"/>
+                        <path clip-path="url(#b)" fill="#4285F4" d="M48 48L17 24l-4-3 35-10z"/>
+                    </svg>
+                    Continue with Google
+                </a>
+                
+                <div class="auth-links">
+                    <span>Already have an account?</span>
+                    <a href="{% url 'account_login' %}">Sign in here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <section class="footer_section">
+        <div class="container">
+            <p>&copy; <span id="displayYear"></span> All rights reserved linkedHub.</p>
+        </div>
+    </section>
+
+     <script type="text/javascript" src="{% static 'js/signup.js' %}"></script>
+</body>
+</html>

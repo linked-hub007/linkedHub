@@ -1,0 +1,192 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Study Material - LinkedHub</title>
+    <link rel="icon" type="image/png" href="{% static 'images/aim.png' %}">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/upload_study_material.css' %}" rel="stylesheet" />
+    
+</head>
+<body>
+    <!-- Header -->
+    <header class="header_section">
+            <div class="container-fluid">
+                <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+                    <a class="navbar-brand" href="{% url 'home' %}">
+                        <img src="{% static 'images/logo.png' %}" alt="" />
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+                            <ul class="navbar-nav">
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="{% url 'base' %}">Home <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'user_directory' %}">Members</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Navigation Bar -->
+        <div class="sidebar">
+            <ul class="nav-menu">
+                <li><a href="{% url 'post' %}"><i class="fas fa-list-alt"></i> Create Task</a></li>
+                <li><a href="#" class="active"><i class="fas fa-book"></i>Create Study Material</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="card material-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-book me-2"></i> Upload Study Material</h3>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                    <div class="mb-4">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <form method="post" action="{% url 'upload_study_material' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Title -->
+                        <div class="mb-4">
+                            <label for="title" class="form-label">Title *</label>
+                            <input type="text" class="form-control" id="title" name="title" required placeholder="Enter material title">
+                        </div>
+                        
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Brief description of the material"></textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <!-- Category -->
+                            <div class="col-md-6 mb-4">
+                                <label for="category" class="form-label">Category *</label>
+                                <select class="form-select" id="category" name="category" required>
+                                    <option value="" selected disabled>Select category</option>
+                                    <option value="school_qp">School Question Paper</option>
+                                    <option value="college_qp">College Question Paper</option>
+                                    <option value="competitive_exam">Competitive Exams</option>
+                                    <option value="entrance_exam">Entrance Exams</option>
+                                    <option value="eligibility_test">Eligibility Test</option>
+                                    <option value="books">Books</option>
+                                    <option value="sample_paper">Sample Paper</option>
+                                    <option value="notes">Notes</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Material Type -->
+                            <div class="col-md-6 mb-4">
+                                <label for="material_type" class="form-label">Material Type *</label>
+                                <select class="form-select" id="material_type" name="material_type" required>
+                                    <option value="" selected disabled>Select type</option>
+                                    <option value="pdf">PDF</option>
+                                    <option value="image">Image</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Institution/Organization -->
+                        <div class="mb-4">
+                            <label for="task_assigned_place" class="form-label">Institution/Organization (Optional)</label>
+                            <input type="text" class="form-control" id="task_assigned_place" name="task_assigned_place" placeholder="E.g., Harvard University, MIT">
+                        </div>
+                        
+                        <!-- File Upload -->
+                        <div class="mb-4">
+                            <label class="form-label">File *</label>
+                            <div class="file-upload-box" onclick="document.getElementById('file').click()">
+                                <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                                <h5>Click to upload or drag and drop</h5>
+                                <p class="text-muted">PDF, JPG, PNG, DOCX (Max 10MB)</p>
+                                <input type="file" id="file" name="file" class="d-none" required 
+                                       accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                                <div id="filePreview" class="mt-2"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Visibility -->
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="is_approved" name="is_approved" required>
+                                <label class="form-check-label" for="is_approved">
+                                    <strong>I approve this material for public viewing *</strong>
+                                </label>
+                                <div class="form-text text-muted">
+                                   I confirm that the content I am uploading is my original work or that I have legal permission to share it. I understand that uploading copyrighted, sexually explicit, violent, or abusive content is strictly prohibited under the LinkedHub Content and Community Standards Act. I agree that such content will be removed, and my account may be suspended or terminated. I accept full legal responsibility for any violations or legal issues resulting from my uploads.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-end mt-4">
+                            <a href="{% url 'study_material' %}" class="btn btn-outline-secondary me-2">
+                                <i class="fas fa-arrow-left me-1"></i> Back to Materials
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-upload me-1"></i> Upload Material
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <section class="footer_section">
+                <div class="container">
+                    <p>&copy; <span id="displayYear"></span> All rights reserved LinkedHub.</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+            crossorigin="anonymous"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/upload_study_material.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/displayYear.js' %}"></script>
+</body>
+</html>

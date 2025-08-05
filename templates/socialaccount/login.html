@@ -1,0 +1,62 @@
+{% load static %}
+{% load i18n %}
+{% load allauth %}
+
+{% block head_title %}
+    
+    <link rel="stylesheet" href="{% static 'css/password_reset.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/aim.png' %}">
+{% endblock head_title %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="success-icon">🔗</div>
+        
+        {% if process == "connect" %}
+            <h1>
+                {% blocktrans with provider.name as provider %}Connect {{ provider }}{% endblocktrans %}
+            </h1>
+            <p class="message-text">
+                {% blocktrans with provider.name as provider %}You are about to connect a new third-party account from {{ provider }}.{% endblocktrans %}
+            </p>
+        {% else %}
+            <h1>
+                {% blocktrans with provider.name as provider %}Sign In with {{ provider }}{% endblocktrans %}
+            </h1>
+            <p class="message-text">
+                {% blocktrans with provider.name as provider %}You are about to sign in using a third-party account from {{ provider }}.{% endblocktrans %}
+            </p>
+        {% endif %}
+
+        <div class="info-text">
+            {% trans "Click continue to proceed with the authentication process." %}
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="reset-btn">
+                {% trans "Continue" %}
+            </button>
+        </form>
+
+        <div class="help-text">
+            {% trans "By continuing, you agree to our terms of service and privacy policy." %}
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>&copy; <span id="displayYear"></span> All rights reserved linkedHub.</p>
+</footer>
+
+<script>
+    // Set current year in footer
+    document.addEventListener('DOMContentLoaded', function() {
+        const displayYear = document.getElementById('displayYear');
+        if (displayYear) {
+            displayYear.textContent = new Date().getFullYear();
+        }
+    });
+</script>
+{% endblock content %}

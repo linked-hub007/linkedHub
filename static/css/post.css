@@ -1,0 +1,541 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header Styles */
+.header {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 15px 20px;
+    border-bottom: 1px solid #dddddd;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.header h1 i {
+    margin-right: 12px;
+}
+
+/* Main Layout */
+.main-container {
+    display: flex;
+    flex: 1;
+}
+
+/* Left Navigation Bar */
+.sidebar {
+    width: 250px;
+    background-color: #f5f5f5;
+    border-right: 1px solid #dddddd;
+    padding: 20px 0;
+    position: sticky;
+    top: 70px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-menu li {
+    margin-bottom: 5px;
+}
+
+.nav-menu a {
+    color: #000000;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 12px 20px;
+    display: block;
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.nav-menu a:hover, .nav-menu a.active {
+    background-color: #e0e0e0;
+    border-left: 4px solid #000000;
+}
+
+.nav-menu i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 30px;
+    max-width: calc(100% - 250px);
+}
+
+/* Task Card */
+.task-card {
+    border-radius: 5px;
+    border: 1px solid #dddddd;
+    background: #ffffff;
+    margin-bottom: 30px;
+}
+
+.card-header {
+    padding: 20px;
+    border-bottom: 1px solid #dddddd;
+    background-color: #f5f5f5;
+    color: #000000;
+}
+
+.card-header h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.card-header i {
+    margin-right: 15px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Form Styles */
+.form-label {
+    font-weight: 600;
+    color: #000000;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-control, .form-select {
+    padding: 10px 15px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #ffffff;
+    width: 100%;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #999999;
+    outline: none;
+}
+
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.input-group-text {
+    background: #f5f5f5;
+    color: #000000;
+    border: 1px solid #dddddd;
+    padding: 10px 15px;
+}
+
+/* Alert Styles */
+.alert {
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    border: 1px solid #dddddd;
+    background-color: #f5f5f5;
+}
+
+/* Button Styles */
+.btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border: 1px solid #dddddd;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    min-height: 44px; /* Better touch target */
+}
+
+.btn i {
+    margin-right: 8px;
+}
+
+.btn-primary {
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #000000;
+}
+
+.btn-outline-secondary {
+    background: transparent;
+    color: #000000;
+    border: 1px solid #000000;
+}
+
+/* Form Layout */
+.form-section {
+    margin-bottom: 20px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+}
+
+.col-md-6 {
+    padding: 0 10px;
+    flex: 0 0 50%;
+    max-width: 50%;
+    box-sizing: border-box;
+}
+
+/* Button Group */
+.d-md-flex {
+    display: flex;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.justify-content-md-end {
+    justify-content: flex-end;
+}
+
+/* Override Bootstrap d-grid class for consistent mobile behavior */
+.d-grid {
+    display: flex !important;
+}
+
+/* Tablet Responsive Design (768px - 992px) */
+@media (max-width: 992px) and (min-width: 769px) {
+    .sidebar {
+        width: 200px;
+    }
+    
+    .main-content {
+        max-width: calc(100% - 200px);
+        padding: 25px;
+    }
+    
+    .header h1 {
+        font-size: 1.6rem;
+    }
+}
+
+/* Mobile Responsive Design (up to 768px) */
+@media (max-width: 768px) {
+    .header {
+        padding: 12px 15px;
+        position: relative; /* Remove sticky on mobile */
+    }
+    
+    .header h1 {
+        font-size: 1.4rem;
+    }
+    
+    .main-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        top: 0;
+        border-right: none;
+        border-bottom: 1px solid #dddddd;
+        padding: 15px 0;
+        max-height: none;
+        overflow-y: visible;
+    }
+    
+    .main-content {
+        max-width: 100%;
+        padding: 15px;
+    }
+    
+    .nav-menu {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0 10px;
+    }
+    
+    .nav-menu li {
+        margin-bottom: 8px;
+        margin-right: 8px;
+        flex: 1;
+        min-width: calc(50% - 8px);
+    }
+    
+    .nav-menu a {
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        padding: 12px 8px;
+        text-align: center;
+        font-size: 0.9rem;
+        border-radius: 4px;
+    }
+    
+    .nav-menu a:hover, .nav-menu a.active {
+        border-left: none;
+        border-bottom: 3px solid #000000;
+        background-color: #e0e0e0;
+    }
+    
+    .nav-menu i {
+        margin-right: 6px;
+        width: 16px;
+    }
+    
+    .card-header {
+        padding: 15px;
+    }
+    
+    .card-header h3 {
+        font-size: 1.3rem;
+    }
+    
+    .card-body {
+        padding: 15px;
+    }
+    
+    .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding: 0 5px;
+    }
+    
+    /* Mobile button layout - side by side as shown in screenshot */
+    .btn {
+        padding: 12px 16px;
+        font-size: 0.95rem;
+        margin-right: 8px;
+        margin-bottom: 10px;
+        min-height: 48px; /* Better touch target for mobile */
+        justify-content: center;
+        flex: 1; /* Make buttons share available space equally */
+    }
+    
+    /* Remove margin from last button */
+    .btn:last-child {
+        margin-right: 0;
+    }
+    
+    /* Override Bootstrap button spacing classes on mobile */
+    .btn.me-md-2 {
+        margin-right: 8px !important;
+        margin-bottom: 10px;
+    }
+    
+    /* Mobile button container - force horizontal layout */
+    .d-grid,
+    .d-grid.gap-2,
+    .d-md-flex {
+        display: flex !important;
+        flex-direction: row !important; /* Keep horizontal on mobile */
+        gap: 8px !important;
+        margin-top: 20px;
+        align-items: stretch; /* Make buttons same height */
+    }
+    
+    /* Keep justify-content for proper spacing */
+    .justify-content-md-end {
+        justify-content: space-between !important; /* Distribute buttons evenly */
+    }
+    
+    .form-control, .form-select {
+        padding: 14px 15px; /* Larger touch targets */
+        font-size: 16px; /* Prevents zoom on iOS */
+        margin-bottom: 16px;
+    }
+    
+    textarea.form-control {
+        min-height: 100px;
+    }
+    
+    .task-card {
+        margin-bottom: 20px;
+        border-radius: 8px;
+    }
+    
+    .alert {
+        padding: 12px;
+        font-size: 0.95rem;
+    }
+}
+
+/* Extra Small Mobile (up to 480px) */
+@media (max-width: 480px) {
+    .header {
+        padding: 10px 12px;
+    }
+    
+    .header h1 {
+        font-size: 1.2rem;
+    }
+    
+    .header h1 i {
+        margin-right: 8px;
+    }
+    
+    .main-content {
+        padding: 12px;
+    }
+    
+    .nav-menu li {
+        flex: 1;
+        min-width: 100%;
+        margin-right: 0;
+    }
+    
+    .nav-menu a {
+        padding: 14px 12px;
+        font-size: 0.9rem;
+    }
+    
+    .card-header {
+        padding: 12px;
+    }
+    
+    .card-header h3 {
+        font-size: 1.2rem;
+    }
+    
+    .card-body {
+        padding: 12px;
+    }
+    
+    .col-md-6 {
+        padding: 0;
+    }
+    
+    .form-control, .form-select {
+        padding: 16px 12px;
+        margin-bottom: 14px;
+    }
+    
+    /* Extra small mobile - maintain side by side layout */
+    .btn {
+        padding: 14px 12px;
+        font-size: 0.9rem;
+        min-height: 50px;
+        flex: 1; /* Keep equal width distribution */
+    }
+    
+    .task-card {
+        border-radius: 6px;
+        margin-bottom: 16px;
+    }
+}
+
+/* Landscape Mobile Optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+    .header {
+        padding: 8px 15px;
+    }
+    
+    .header h1 {
+        font-size: 1.3rem;
+    }
+    
+    .nav-menu {
+        flex-direction: row;
+        justify-content: center;
+        padding: 10px;
+    }
+    
+    .nav-menu li {
+        flex: none;
+        min-width: auto;
+        margin: 0 4px;
+    }
+    
+    .nav-menu a {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Focus and Accessibility Improvements */
+.btn:focus,
+.form-control:focus,
+.form-select:focus,
+.nav-menu a:focus {
+    outline: 2px solid #000000;
+    outline-offset: 2px;
+}
+
+/* Smooth Transitions */
+* {
+    transition: all 0.2s ease;
+}
+
+/* Prevent horizontal scroll */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    overflow-x: hidden;
+}
+.footer_section .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 8px 0 0 0;
+    width: 100%;
+    text-align: center;
+}
+
+.footer_section p {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 0.85rem;
+    margin: 0 auto;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+    text-align: center;
+    width: 100%;
+}
+
+.footer_section p span {
+    color: #ffd700;
+    font-weight: 500;
+}
+
+.footer_section a {
+    color: #ffd700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer_section a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}

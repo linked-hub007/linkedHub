@@ -1,0 +1,432 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- SEO & Site Metas -->
+    <meta name="keywords" content="LinkedHub, Study Materials, Notes, Question Papers, Competitive Exams, Books, Sample Papers, Academic Resources" />
+    <meta name="description" content="LinkedHub Study Materials - Access a vast collection of study materials including notes, question papers, books, and exam resources for schools, colleges, and competitive exams." />
+    <meta name="author" content="LinkedHub Team" />
+
+    <title>Study Materials - LinkedHub</title>
+    <link rel="icon" type="image/png" href="{% static 'images/aim.png' %}">
+
+    <!-- CSRF Token for JavaScript -->
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+    
+    <!-- User Authentication Status -->
+    <div data-user-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}" style="display: none;"></div>
+
+    <!-- slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700|Raleway:400,700&display=swap" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/study_material.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/slider.css' %}" rel="stylesheet" />
+    
+</head>
+
+<body>
+    <div class="hero_area">
+        <!-- header section starts -->
+        <header class="header_section">
+            <div class="container-fluid">
+                <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+                    <a class="navbar-brand" href="{% url 'home' %}">
+                        <img src="{% static 'images/logo.png' %}" alt="" />
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+                            <ul class="navbar-nav">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="{% url 'base' %}">Home <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'user_directory' %}">Members</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <!-- end header section -->
+        <!-- Add this HTML where you want the slider to appear -->
+        <div class="small-slider">
+            <div class="slider-container">
+                <div class="slider-track">
+                    <div class="slider-slide">
+                        <h3>Slide 1</h3>
+                        <p>This is the first slide content.</p>
+                    </div>
+                    <div class="slider-slide">
+                        <h3>Slide 2</h3>
+                        <p>This is the second slide content.</p>
+                    </div>
+                    <div class="slider-slide">
+                        <h3>Slide 3</h3>
+                        <p>This is the third slide content.</p>
+                    </div>
+                </div>
+            </div>
+    
+    <button class="slider-arrow prev">&#10094;</button>
+    <button class="slider-arrow next">&#10095;</button>
+    
+    <div class="slider-nav">
+        <span class="slider-dot active"></span>
+        <span class="slider-dot"></span>
+        <span class="slider-dot"></span>
+    </div>
+</div>
+        
+
+        <!-- Search Section -->
+         <div class="search-section">
+            <div class="search-container">
+                <div class="search-header">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search for study materials, notes, books..." onkeyup="filterMaterials()">
+                    </div>
+                    <div class="role-buttons">
+                        <form method="get" action="{% url 'base' %}" style="display: inline;">
+                            <button type="submit" class="role-btn" id="taskBtn" aria-label="Task" role="button" aria-pressed="false">
+                                <i class="fas fa-bullseye" aria-hidden="true"></i>
+                                <span class="btn-label">Task</span>
+                            </button>
+                        </form>
+                        <button class="role-btn active" id="studyBtn" aria-label="Study material" role="button" aria-pressed="true">
+                            <i class="fas fa-book" aria-hidden="true"></i>
+                            <span class="btn-label">Study material</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end search section -->
+
+        <!-- Content Container -->
+        <div class="content-container">
+            <!-- Enhanced Sidebar with filters -->
+            <div class="sidebar">
+                <h3><i class="fas fa-sliders-h"></i> Smart Filters</h3>
+
+                <div class="filter-group">
+                    <label><i class="fas fa-layer-group"></i> Material Type</label>
+                    <select id="materialTypeFilter" onchange="filterMaterials()">
+                        <option value="">All Types</option>
+                        <option value="pdf">PDF</option>
+                        <option value="image">Image</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-map-marker-alt"></i> Assigned Place</label>
+                    <input type="text" id="assignedPlaceFilter" placeholder="Filter by assigned place..." onkeyup="filterMaterials()">
+                </div>
+                
+                <div class="filter-group">
+                    <label><i class="fas fa-tags"></i> Category</label>
+                    <select id="categoryFilter" onchange="filterMaterials()">
+                        <option value="">All Categories</option>
+                        <option value="school_qp">School Question Paper</option>
+                        <option value="college_qp">College Question Paper</option>
+                        <option value="competitive_exam">Competitive Exams</option>
+                        <option value="entrance_exam">Entrance Exams</option>
+                        <option value="eligibility_test">Eligibility Test</option>
+                        <option value="books">Books</option>
+                        <option value="sample_paper">Sample Paper</option>
+                        <option value="notes">Notes</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-user"></i> Author</label>
+                    <input type="text" id="authorFilter" placeholder="Filter by author..." onkeyup="filterMaterials()">
+                </div>
+                
+                <div class="filter-group">
+                    <label><i class="fas fa-calendar-alt"></i> Upload Date</label>
+                    <select id="dateFilter" onchange="filterMaterials()">
+                        <option value="">Any Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="year">This Year</option>
+                    </select>
+                </div>
+                
+                <button class="reset-filters" onclick="resetFilters()">
+                    <i class="fas fa-refresh"></i> Reset All Filters
+                </button>
+            </div>
+
+            <!-- Main Content with study materials -->
+            <div class="main-content">
+                {% if not study_materials %}
+                <div class="empty-state" style="text-align: center; padding: 60px 20px; color: #666;">
+                    <i class="fas fa-book-open" style="font-size: 64px; margin-bottom: 20px; color: #ddd;"></i>
+                    <h3 style="margin-bottom: 15px; font-size: 28px;">No Study Materials Yet</h3>
+                    <p style="margin-bottom: 25px; font-size: 18px;">Be the first to share some study materials with the community!</p>
+                    {% if user.is_authenticated %}
+                    <a href="#" class="action-btn btn-open" style="padding: 12px 24px; background: #000000; color: white; text-decoration: none; border-radius: 5px; display: inline-block;">
+                        <i class="fas fa-plus"></i>
+                        Upload Material
+                    </a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="action-btn btn-open" style="padding: 12px 24px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; display: inline-block;">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login to Upload
+                    </a>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div id="materials-content" class="task-grid">
+                    {% for material in study_materials %}
+                    <div class="material-card" 
+                         data-type="{{ material.material_type }}" 
+                         data-category="{{ material.category }}"
+                         data-location="{{ material.task_assigned_place|default:'' }}"
+                         data-author="{{ material.user.first_name|default:material.user.username|default:'Unknown' }}"
+                         data-upload-date="{{ material.created_at|date:'Y-m-d' }}"
+                         data-material-id="{{ material.id }}">
+                        
+                        <!-- Card Header: Category + Upload Date -->
+                        <div class="card-header">
+                            <span class="material-category category-{{ material.category }}">
+                                {{ material.get_category_display }}
+                            </span>
+                            <span class="upload-date">{{ material.created_at|date:"M d, Y" }}</span>
+                        </div>
+                        
+                        <!-- Title -->
+                        <h3 class="material-title">{{ material.title }}</h3>
+                        
+                        <!-- Description (if available) -->
+                        {% if material.description %}
+                        <div class="material-description">
+                            <p>{{ material.description|truncatewords:20 }}</p>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Location Badge -->
+                        {% if material.task_assigned_place %}
+                        <div class="location-badge">
+                            <i class="fas fa-map-marker-alt"></i>
+                            {{ material.task_assigned_place }}
+                        </div>
+                        {% endif %}
+                        
+                        <!-- File Type Badge -->
+                        <div class="file-type-badge">
+                            <i class="fas fa-file"></i>
+                            {{ material.get_file_extension|upper }}
+                        </div>
+                        
+                        <!-- Author Info -->
+                        <div class="author-info">
+                            <div class="author-avatar">
+                                {% if material.user.profile and material.user.profile.profile_picture %}
+                                    <img src="{{ material.user.profile.profile_picture.url }}" alt="{{ material.user.username }}">
+                                {% else %}
+                                    {{ material.user.first_name|default:material.user.username|default:"U"|first|upper }}
+                                {% endif %}
+                            </div>
+                            <div class="author-details">
+                                <div class="author-name">{{ material.user.first_name|default:material.user.username|default:"Unknown" }}</div>
+                                <div class="author-role">
+                                    <i class="fas fa-user"></i> Author
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Footer: Stats + Actions -->
+                        <div class="card-footer">
+                            <div class="material-stats">
+                                <div class="stat-item views">
+                                    <i class="fas fa-eye"></i>
+                                    <span>{{ material.views }}</span>
+                                </div>
+                                <div class="stat-item file-size">
+                                    <i class="fas fa-hdd"></i>
+                                    <span>{{ material.file_size }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-actions">
+                                <a href="{% url 'view_material' material.id %}" 
+                                   target="_blank" 
+                                   rel="noopener noreferrer" 
+                                   class="action-btn btn-open"
+                                   title="View Material">
+                                    <i class="fas fa-eye"></i>
+                                    Open
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Pagination -->
+                {% if study_materials.has_other_pages %}
+                <div class="pagination-container">
+                    <nav aria-label="Study materials pagination">
+                        <ul class="pagination justify-content-center">
+                            {% if study_materials.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1{% if current_category != 'all' %}&category={{ current_category }}{% endif %}{% if current_type != 'all' %}&type={{ current_type }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_sort != 'latest' %}&sort={{ current_sort }}{% endif %}" aria-label="First">
+                                        <i class="fas fa-angle-double-left"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ study_materials.previous_page_number }}{% if current_category != 'all' %}&category={{ current_category }}{% endif %}{% if current_type != 'all' %}&type={{ current_type }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_sort != 'latest' %}&sort={{ current_sort }}{% endif %}" aria-label="Previous">
+                                        <i class="fas fa-angle-left"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            
+                            {% for num in study_materials.paginator.page_range %}
+                                {% if study_materials.number == num %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ num }}</span>
+                                    </li>
+                                {% elif num > study_materials.number|add:'-3' and num < study_materials.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ num }}{% if current_category != 'all' %}&category={{ current_category }}{% endif %}{% if current_type != 'all' %}&type={{ current_type }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_sort != 'latest' %}&sort={{ current_sort }}{% endif %}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if study_materials.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ study_materials.next_page_number }}{% if current_category != 'all' %}&category={{ current_category }}{% endif %}{% if current_type != 'all' %}&type={{ current_type }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_sort != 'latest' %}&sort={{ current_sort }}{% endif %}" aria-label="Next">
+                                        <i class="fas fa-angle-right"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ study_materials.paginator.num_pages }}{% if current_category != 'all' %}&category={{ current_category }}{% endif %}{% if current_type != 'all' %}&type={{ current_type }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_sort != 'latest' %}&sort={{ current_sort }}{% endif %}" aria-label="Last">
+                                        <i class="fas fa-angle-double-right"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    
+                    <div class="pagination-info text-center mt-3">
+                        <p class="text-muted">
+                            Showing {{ study_materials.start_index }} to {{ study_materials.end_index }} of {{ total_count }} materials
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        <!-- End Content Container -->
+    </div>
+    
+    <!-- About Section -->
+    <section class="info_section layout_padding2-top" id="contact">
+        <div class="social_container">
+            <div class="social_box">
+                <a href="https://facebook.com" aria-label="Facebook">
+                    <img src="{% static 'images/fb.png' %}" alt="Facebook">
+                </a>
+                <a href="https://twitter.com" aria-label="Twitter">
+                    <img src="{% static 'images/twitter.png' %}" alt="Twitter">
+                </a>
+                <a href="https://linkedin.com" aria-label="LinkedIn">
+                    <img src="{% static 'images/linkedin.png' %}" alt="LinkedIn">
+                </a>
+                <a href="https://youtube.com" aria-label="YouTube">
+                    <img src="{% static 'images/youtube.png' %}" alt="YouTube">
+                </a>
+            </div>
+        </div>
+        <div class="info_container">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-lg-3">
+                        <h6>ABOUT US</h6>
+                        <p>Connecting students with quality study materials for better learning outcomes.</p>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <h6>SOCIAL MEDIA</h6>
+                        <p>Follow us on social media for the latest updates, study tips, and educational content.</p>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <h6>NEED HELP</h6>
+                        <p>Contact us for inquiries or support. Our team is ready to assist you with your educational needs.</p>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <h6>CONTACT US</h6>
+                        <div class="info_link-box">
+                            <a href="https://maps.app.goo.gl/uJk2eu1ELErjsJ5FA" aria-label="Location">
+                                <img src="{% static 'images/location.png' %}" alt="Location icon">
+                                <span>location</span>
+                            </a>
+                            <a href="tel:+917598077190" aria-label="Call us">
+                                <img src="{% static 'images/call.png' %}" alt="Phone icon">
+                                <span>+91 7598077190</span>
+                            </a>
+                            <a href="mailto:linkedhub007@gmail.com" aria-label="Email us">
+                                <img src="{% static 'images/mail.png' %}" alt="Email icon">
+                                <span>linkedhub007@gmail.com</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="footer_section">
+            <div class="container">
+                <p>&copy; <span id="displayYear"></span> All rights reserved LinkedHub.</p>
+            </div>
+        </section>
+    </section>
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+    
+    <!-- Study Material JavaScript - Load last -->
+    <script type="text/javascript" src="{% static 'js/study_material.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/slider.js' %}"></script>
+</body>
+</html>

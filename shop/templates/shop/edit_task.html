@@ -1,0 +1,203 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task - LinkedHub</title>
+    <link rel="icon" type="image/png" href="{% static 'images/aim.png' %}">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+    <!-- Custom styles -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/edit_task.css' %}" rel="stylesheet" />
+    
+</head>
+<body>
+    <!-- Header -->
+    <header class="header_section">
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <img src="{% static 'images/logo.png' %}" alt="LinkedHub Logo" />
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'base' %}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'about' %}">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'user_directory' %}">Members</a>
+                            </li>
+                            
+                            
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container edit-task-container">
+        <!-- Left Navigation -->
+        <div class="sidebar">
+            <ul class="nav-menu">
+                <li><a href="{% url 'my_tasks' %}" class="active"><i class="fas fa-list-alt"></i> My Tasks</a></li>
+                
+            </ul>
+        </div>
+
+        <!-- Edit Task Form -->
+        <div class="main-content">
+            <div class="card edit-task-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-edit"></i> Edit Task</h3>
+                    <p class="text-muted">Update your task details below</p>
+                </div>
+
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" action="{% url 'edit_task' task.id %}">
+                        {% csrf_token %}
+                        
+                        <!-- Title -->
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Task Title *</label>
+                            <input type="text" class="form-control" id="title" name="title" 
+                                   value="{{ task.title }}" required>
+                        </div>
+                        
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description *</label>
+                            <textarea class="form-control" id="description" name="description" 
+                                      rows="5" required>{{ task.description }}</textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <!-- Budget -->
+                            <div class="col-md-6 mb-3">
+                                <label for="budget" class="form-label">Budget (₹) *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-rupee-sign"></i></span>
+                                    <input type="number" class="form-control" id="budget" name="budget" 
+                                           min="0.01" step="0.01" value="{{ task.budget }}" required>
+                                </div>
+                            </div>
+                            
+                            <!-- Category -->
+                            <div class="col-md-6 mb-3">
+                                <label for="category" class="form-label">Category *</label>
+                                <select class="form-select" id="category" name="category" required>
+                                    <option value="general" {% if task.category == 'general' %}selected{% endif %}>General</option>
+                                    <option value="urgent" {% if task.category == 'urgent' %}selected{% endif %}>Urgent</option>
+                                    <option value="delivery" {% if task.category == 'delivery' %}selected{% endif %}>Delivery</option>
+                                    <option value="cleaning" {% if task.category == 'cleaning' %}selected{% endif %}>Cleaning</option>
+                                    <option value="technical" {% if task.category == 'technical' %}selected{% endif %}>Technical</option>
+                                    <option value="creative" {% if task.category == 'creative' %}selected{% endif %}>Creative</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <!-- Deadline -->
+                            <div class="col-md-6 mb-3">
+                                <label for="deadline" class="form-label">Deadline</label>
+                                <input type="date" class="form-control" id="deadline" name="deadline" 
+                                       value="{{ task.deadline|date:'Y-m-d' }}">
+                            </div>
+                            
+                            <!-- Location -->
+                            <div class="col-md-6 mb-3">
+                                <label for="task_assigned_place" class="form-label">Location (Optional)</label>
+                                <input type="text" class="form-control" id="task_assigned_place" name="task_assigned_place" 
+                                       value="{{ task.task_assigned_place }}" placeholder="E.g., Harvard University, Google Inc">
+                            </div>
+                        </div>
+                        
+                        <!-- Status (only if task is assigned or in progress) -->
+                        {% if task.status in 'assigned,in_progress' %}
+                        <div class="mb-3">
+                            <label class="form-label">Current Status</label>
+                            <div class="status-display">
+                                <span class="status-badge status-{{ task.status }}">
+                                    {{ task.get_status_display }}
+                                </span>
+                                {% if task.assigned_to %}
+                                <span class="assigned-to">
+                                    <i class="fas fa-user-tie"></i> Assigned to: {{ task.assigned_to.get_full_name|default:task.assigned_to.username }}
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'my_tasks' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to My Tasks
+                            </a>
+                            <div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Save Changes
+                                </button>
+                                <a href="{% url 'delete_task' task.id %}" class="btn btn-danger ms-2"
+                                   onclick="return confirm('Are you sure you want to delete this task?');">
+                                    <i class="fas fa-trash-alt"></i> Delete Task
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer_section">
+        <div class="container">
+            <p>&copy; <span id="displayYear"></span> All rights reserved LinkedHub.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/edit_task.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/displayYear.js' %}"></script>
+
+
+    <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+            crossorigin="anonymous"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

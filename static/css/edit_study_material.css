@@ -1,0 +1,305 @@
+/* edit_material.css - Styles for Edit Material Page */
+
+/* Reset and Base Styles */
+.edit-material-container {
+    display: flex;
+    min-height: calc(100vh - 150px);
+    background-color: #f8f9fa;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    min-width: 250px;
+    background: #ffffff;
+    border-right: 1px solid #dee2e6;
+    padding: 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-menu li {
+    width: 100%;
+}
+
+.nav-menu a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 12px 16px;
+    background-color: #f8f9fa;
+    color: #000000;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    text-align: left;
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.nav-menu a:hover {
+    background-color: #e9ecef;
+    color: #000000;
+    border-color: #dee2e6;
+}
+
+.nav-menu a.active {
+    background-color: #000000;
+    color: #ffffff;
+    border-color: #000000;
+}
+
+.nav-menu i {
+    margin-right: 8px;
+    width: 16px;
+    text-align: center;
+    color: inherit;
+    font-size: 1.1rem;
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    padding: 30px;
+    width: calc(100% - 250px);
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.edit-material-card {
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.edit-material-card .card-header {
+    padding: 20px;
+    border-bottom: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.edit-material-card .card-header h3 {
+    color: #333;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.edit-material-card .card-body {
+    padding: 20px;
+}
+
+/* Current File Preview */
+.current-file {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.file-preview {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+.file-preview i {
+    font-size: 2rem;
+}
+
+.file-preview .pdf-icon {
+    color: #dc3545;
+}
+
+.file-info {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Form Styles */
+.form-label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+.form-control,
+.form-select {
+    border-radius: 6px;
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #333333;
+}
+
+/* Mobile Responsive */
+@media (max-width: 991px) {
+    .edit-material-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        min-width: 100%;
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid #dee2e6;
+        padding: 15px;
+    }
+    
+    .nav-menu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .nav-menu li {
+        flex: 1;
+        min-width: calc(50% - 5px);
+    }
+    
+    .main-content {
+        width: 100%;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 767px) {
+    .edit-material-card .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .edit-material-card .card-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .d-grid.gap-2.d-md-flex.justify-content-md-end {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .nav-menu li {
+        min-width: 100%;
+    }
+    
+    .nav-menu {
+        flex-direction: column;
+    }
+}
+
+/* Utility Classes */
+.mb-3 { margin-bottom: 1rem; }
+.mb-4 { margin-bottom: 1.5rem; }
+.mt-4 { margin-top: 1.5rem; }
+.d-flex { display: flex; }
+.align-items-center { align-items: center; }
+.justify-content-between { justify-content: space-between; }
+.flex-wrap { flex-wrap: wrap; }
+.gap-2 { gap: 0.5rem; }
+
+.footer_section .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 8px 0 0 0;
+    width: 100%;
+    text-align: center;
+}
+
+.footer_section p {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 0.85rem;
+    margin: 0 auto;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+    text-align: center;
+    width: 100%;
+}
+
+.footer_section p span {
+    color: #ffd700;
+    font-weight: 500;
+}
+
+.footer_section a {
+    color: #ffd700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer_section a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}

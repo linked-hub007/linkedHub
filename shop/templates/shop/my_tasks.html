@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tasks - LinkedHub</title>
+    <link rel="icon" type="image/png" href="{% static 'images/aim.png' %}">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+    <!-- Custom styles -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/my_tasks.css' %}" rel="stylesheet" />
+    
+</head>
+<body>
+    
+    <!-- Header -->
+    <header class="header_section">
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <img src="{% static 'images/logo.png' %}" alt="LinkedHub Logo" />
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'base' %}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'about' %}">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'user_directory' %}">Members</a>
+                            </li>
+                            
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container my-tasks-container">
+        <!-- Left Navigation -->
+        <div class="sidebar">
+            <ul class="nav-menu">
+                <li><a href="{% url 'my_tasks' %}" class="active"><i class="fas fa-list-alt"></i>Uploads Tasks</a></li>
+                <li><a href="{% url 'my_uploads' %}"><i class="fas fa-book"></i> Uploads Study Material</a></li>
+            </ul>
+        </div>
+
+        <!-- Task Management Content -->
+        <div class="main-content">
+            <div class="card task-management-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-list-alt"></i> My Uploaded Tasks</h3>
+                    <div class="task-stats">
+                        <span class="stat-item">
+                            <i class="fas fa-list-ul"></i> Total: {{ tasks.count }}
+                        </span>
+                        
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <!-- Filter/Search Bar -->
+                    <div class="task-filter-bar">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="taskSearch" placeholder="Search tasks...">
+                        </div>
+                    </div>
+
+                    <!-- Task List -->
+                    <div class="task-list">
+                        {% if tasks %}
+                            {% for task in tasks %}
+                            <div class="task-item" data-status="{{ task.status }}">
+                                <div class="task-main-info">
+                                    <div class="task-title-status">
+                                        <h4>{{ task.title }}</h4>
+                                        <span class="task-status status-{{ task.status }}">
+                                            {{ task.get_status_display }}
+                                        </span>
+                                    </div>
+                                    <div class="task-meta">
+                                        <span><i class="fas fa-rupee-sign"></i> ₹{{ task.budget }}</span>
+                                        <span><i class="fas fa-calendar-alt"></i> {{ task.created_at|date:"M d, Y" }}</span>
+                                        {% if task.deadline %}
+                                        <span><i class="fas fa-clock"></i> Due: {{ task.deadline|date:"M d, Y" }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="task-actions">
+                                    
+                                    <a href="{% url 'edit_task' task.id %}" class="btn btn-edit">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <form action="{% url 'delete_task' task.id %}" method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-delete" 
+                                                onclick="return confirm('Are you sure you want to delete this task?');">
+                                            <i class="fas fa-trash-alt"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-state">
+                                <i class="fas fa-list-alt"></i>
+                                <h4>No Tasks Found</h4>
+                                <p>You haven't created any tasks yet. Get started by creating your first task!</p>
+                                <a href="{% url 'create_task' %}" class="btn btn-primary">
+                                    <i class="fas fa-plus-circle"></i> Create Task
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer_section">
+        <div class="container">
+            <p>&copy; <span id="displayYear"></span> All rights reserved LinkedHub.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/my_tasks.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/displayYear.js' %}"></script>
+
+
+    <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+            crossorigin="anonymous"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

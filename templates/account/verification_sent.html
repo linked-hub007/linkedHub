@@ -1,0 +1,57 @@
+{% load static %}
+{% load i18n %}
+{% load allauth %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/password_reset.css' %}">
+    <title>
+        {% block head_title %}
+            {% trans "Verify Your Email Address" %}
+        {% endblock head_title %}
+    </title>
+    <link rel="stylesheet" href="path/to/your/styles.css">
+    <link rel="icon" type="image/png" href="{% static 'images/aim.png' %}">
+</head>
+<body>
+    {% block content %}
+    <div class="container">
+        <div class="card">
+            <div class="success-icon">✓</div>
+            
+            <h1>{% trans "Verify Your Email Address" %}</h1>
+            
+            <div class="message-text">
+                {% blocktrans %}We have sent an email to you for verification. Follow the link provided to finalize the signup process. If you do not see the verification email in your main inbox, check your spam folder. Please contact us if you do not receive the verification email within a few minutes.{% endblocktrans %}
+            </div>
+            
+            <div class="info-text">
+                {% trans "Check your email and click the verification link to complete your registration." %}
+            </div>
+            
+            <div class="login-btn">
+                <div class="help-text">
+                    {% trans "Already verified? You can now log in to your account." %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>&copy; <span id="displayYear"></span> All rights reserved linkedHub.</p>
+    </footer>
+    {% endblock content %}
+
+    <script>
+        // Set current year in footer
+        document.addEventListener('DOMContentLoaded', function() {
+            const displayYear = document.getElementById('displayYear');
+            if (displayYear) {
+                displayYear.textContent = new Date().getFullYear();
+            }
+        });
+    </script>
+</body>
+</html>

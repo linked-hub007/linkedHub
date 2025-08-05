@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="LinkedHub, Task Marketplace, Freelance Platform, Skill-Based Matching, Instant Hiring, Remote Work, Task Posting, Live Availability, Content Writing, Graphic Design, Web Development, Social Media Tasks, Virtual Assistance, Microtasks, Project Management, Business Support, Digital Services" />
+    <meta name="description" content="LinkedHub is a real-time task collaboration platform connecting task posters with skilled doers instantly. Post tasks, match by skill, and get work done efficiently—from writing and design to development and marketing." />
+    <meta name="author" content="LinkedHub Team" />
+
+    <title>LinkedHub</title>
+    <link rel="icon" type="image/png" href="{% static 'images/aim.png' %}">
+    <link href="{% static 'css/index.css' %}" rel="stylesheet">
+</head>
+<body>
+    <section id="hero">
+        <div class="hero-container">
+          <a href="index.html" class="hero-logo" data-aos="zoom-in"><img src="{% static 'images/hero-logo.png' %}" alt=""></a>
+          <h1 data-aos="zoom-in">Welcome To LinkedHub</h1>
+          <h2 data-aos="fade-up">A seamless platform connecting task seekers with skilled professionals in effortlessly and on time</h2>
+          <a data-aos="fade-up" data-aos-delay="200" href="{% url 'base' %}" class="btn-get-started scrollto">Get Started</a>
+        </div>
+        
+      </section>
+
+      <footer class="footer_section">
+        <div class="container">
+            <p>&copy; <span id="displayYear"></span> All rights reserved LinkedHub.</p>
+        </div>
+    </footer>
+    <script src="{% static 'js/displayYear.js' %}"></script>
+</body>
+</html> 

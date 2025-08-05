@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Two-Factor Authentication</title>
+    <link href="{% static 'css/setup_otp.css' %}" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="{% static 'images/aim.png' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Setup Two-Factor Authentication</h2>
+        
+        <p>Welcome! To secure your account, we need to set up two-factor authentication.</p>
+        
+        <p>We'll send an OTP to: <strong>{{ user.email }}</strong></p>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Send OTP</button>
+        </form>
+        
+        <p><a href="{% url 'logout' %}">Logout</a></p>
+        
+        <div class="footer-text">
+            <p>&copy; <span id="displayYear"></span>All rights reserved LinkedHub.</p>
+        </div>
+    </div>
+    <script type="text/javascript" src="{% static 'js/displayYear.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/setup_otp.js' %}"></script>
+    
+</body>
+</html>

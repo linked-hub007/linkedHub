@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{% static 'images/aim.png' %}">
+    <title>{{ material.title }} - LinkedHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="{% static 'css/view_material.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/notifications.css' %}" rel="stylesheet" />
+</head>
+<body>
+    <!-- Header - CORRECTED -->
+    <header class="header" id="header">
+        <div class="header-content">
+            <a class="logo" href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}" alt="LinkedHub" />
+            </a>
+            <div class="header-actions">
+                <a href="{% url 'study_material' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Wrapper with Ads -->
+    <div class="main-wrapper" id="main-wrapper">
+        <!-- Left Ad Column -->
+        <div class="ad-column" id="left-ad">
+            <div class="ad-placeholder">
+                <i class="fas fa-ad" style="font-size: 2rem; margin-bottom: 10px; color: #007bff;"></i>
+                <div>Advertisement Space</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-container" id="main-container">
+            <!-- Viewer Container -->
+            <div class="viewer-container" id="viewer-container">
+                <!-- Viewer Header -->
+                <div class="viewer-header" id="viewer-header">
+                    <div class="file-info">
+                        <h3 id="document-title">{{ material.title }}</h3>
+                        <div class="file-meta" id="file-meta">
+                            <span><i class="fas fa-file"></i> <span id="file-type">{{ file_type|upper }}</span> Document</span>
+                            <span><i class="fas fa-calendar-alt"></i> <span id="created-date">{{ material.created_at|date:"M d, Y" }}</span></span>
+                            <span><i class="fas fa-user-circle"></i> <span id="author">{{ material.user.first_name|default:material.user.username|default:"Unknown" }}</span></span>
+                            <span><i class="fas fa-hdd"></i> <span id="file-size">{{ file_size }}</span></span>
+                            <span><i class="fas fa-eye"></i> <span id="view-count">{{ total_views }}</span> views</span>
+                        </div>
+                    </div>
+                    <div class="viewer-controls">
+                        <button class="btn" id="fit-width-btn" title="Fit Width">
+                            <i class="fas fa-arrows-alt-h"></i>
+                        </button>
+                        <button class="btn" id="fit-height-btn" title="Fit Height">
+                            <i class="fas fa-arrows-alt-v"></i>
+                        </button>
+                        <button class="btn" id="zoom-out-btn" title="Zoom Out">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <span id="zoom-level-display" style="padding: 0.4rem 0.6rem; font-size: 0.8rem; color: #666; background: #f8f9fa; border-radius: 4px;">100%</span>
+                        <button class="btn" id="zoom-in-btn" title="Zoom In">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button class="btn" id="fullscreen-btn" title="Fullscreen View">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Viewer Content -->
+                <div class="viewer-content" id="viewer-content">
+                    <div class="loading-spinner" id="loading-spinner">
+                        <div class="spinner"></div>
+                    </div>
+                    
+                    <!-- PDF Viewer -->
+                    <div class="pdf-viewer" id="pdf-viewer">
+                        <div class="pdf-canvas-container">
+                            <canvas id="pdf-canvas"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Image Viewer -->
+                    <div class="image-viewer hidden" id="image-viewer">
+                        <div class="image-container" id="image-container">
+                            <img id="viewer-image" alt="Document Image" draggable="false">
+                        </div>
+                    </div>
+
+                    <!-- Generic Viewer -->
+                    <div class="generic-viewer hidden" id="generic-viewer">
+                        <iframe id="document-frame" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-downloads"></iframe>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div class="error-message hidden" id="error-message">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <h4>Unable to load document</h4>
+                        <p>Please check your internet connection and try again.</p>
+                        <button class="btn btn-secondary" onclick="location.reload()" style="margin-top: 1rem;">
+                            <i class="fas fa-refresh"></i> Retry
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Enhanced Page Navigation -->
+                <div class="page-nav" id="page-nav">
+                    <button class="btn" id="first-page-btn" title="First Page">
+                        <i class="fas fa-angle-double-left"></i>
+                    </button>
+                    <button class="btn" id="prev-page-btn" title="Previous Page" disabled>
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <input type="number" id="page-input" min="1" max="1" value="1" 
+                           style="width: 60px; text-align: center; border: 1px solid #dee2e6; border-radius: 4px; padding: 0.3rem;">
+                    <div class="page-info">
+                        of <span id="total-pages">1</span>
+                    </div>
+                    <button class="btn" id="next-page-btn" title="Next Page" disabled>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <button class="btn" id="last-page-btn" title="Last Page">
+                        <i class="fas fa-angle-double-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Ad Column -->
+        <div class="ad-column" id="right-ad">
+            <div class="ad-placeholder">
+                <i class="fas fa-star" style="font-size: 2rem; margin-bottom: 10px; color: #ffc107;"></i>
+                <div>Premium Features</div>
+            </div>
+        </div>
+    </div>
+    <section class="footer_section">
+        <div class="container">
+            <p>&copy; <span id="displayYear"></span> All rights reserved LinkedHub.</p>
+        </div>
+    </section>
+    
+    <!-- Pass Django variables to JavaScript -->
+    <!-- Pass Django variables to JavaScript -->
+<script>
+    window.documentConfig = {
+        fileType: '{{ file_type|escapejs }}',
+        materialType: '{{ material.material_type|escapejs }}', // Add this line
+        fileUrl: '{{ file_url|escapejs }}'
+    };
+</script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="{% static 'js/view_material.js' %}"></script>
+    <script src="{% static 'js/displayYear.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Task Applications</title>
+    <link rel="icon" type="image/png" href="{% static 'images/aim.png' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/my_task_applications.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/notifications.css' %}" rel="stylesheet" />
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header_section">
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <img src="{% static 'images/logo.png' %}" alt="LinkedHub Logo" />
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="d-flex ms-auto flex-column flex-lg-row align-items-center">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'base' %}">
+                                    Home
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'about' %}">
+                                    About
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'user_directory' %}">Members</a>
+                            </li>
+                            
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'profile' %}">
+                                   Profile
+                                </a>
+                            </li>
+                            <li class="nav-item position-relative">
+                                <a class="nav-link" href="{% url 'notifications' %}" id="notificationLink">
+                                    <i class="fas fa-bell"></i>
+                                    <!-- Notification Badge -->
+                                    {% if unread_count > 0 %}
+                                        {% if unread_count > 9 %}
+                                            <span class="notification-badge">9+</span>
+                                        {% else %}
+                                            <span class="notification-badge">{{ unread_count }}</span>
+                                        {% endif %}
+                                    {% elif has_unread_notifications %}
+                                        <span class="notification-dot"></span>
+                                    {% endif %}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h3><i class="fas fa-list-ul me-2"></i>Manage Requests</h3>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="#" class="tab-link active" data-tab="incoming">
+                        <i class="fas fa-inbox"></i>
+                        Incoming Requests
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Incoming Requests Tab -->
+            <div id="incoming" class="tab-content active">
+                <div class="tab-header">
+                    <h2 class="tab-title">Incoming Task Applications</h2>
+                    <div class="status-summary">
+                        <span class="summary-pending">Pending: {{ pending_count }}</span>
+                        <span class="summary-accepted">Accepted: {{ accepted_count }}</span>
+                        <span class="summary-rejected">Rejected: {{ rejected_count }}</span>
+                    </div>
+                </div>
+
+                {% if applications %}
+                <div class="applications-grid">
+                    {% for app in applications %}
+                    <div class="application-card">
+                        <!-- Task Information -->
+                        <div class="task-info">
+                            <div class="task-title">{{ app.task.title }}</div>
+                            <div class="task-budget">
+                                <i class="fas fa-indian-rupee-sign"></i>
+                                Original Budget: ₹{{ app.task.budget|floatformat:2 }}
+                            </div>
+                        </div>
+                        <!-- Applicant Info -->
+                         <div class="applicant-info">
+                            <div class="applicant-avatar">
+                                {% if app.applicant.profile.profile_picture %}
+                                <img src="{{ app.applicant.profile.profile_picture.url }}" alt="{{ app.applicant.username }}'s profile picture">
+                                {% else %}
+                                <div class="default-avatar">
+                                    {{ app.applicant.username|slice:":1"|upper }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="applicant-details">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3>{{ app.applicant.get_full_name|default:app.applicant.username }}</h3>
+                                        <p>@{{ app.applicant.username }}</p>
+                                    </div>
+                                    <div style="display: flex; gap: 10px;">
+                                        <a href="{% url 'public_profile' app.applicant.username %}" class="view-profile-btn" title="View Profile">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <!-- Delete Button Form -->
+                                         <form method="post" action="{% url 'delete_application' app.id %}" class="delete-form">
+                                            {% csrf_token %}
+                                            <button type="submit" class="delete-btn" title="Delete Application" onclick="return confirm('Are you sure you want to delete this application?');">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Application Message -->
+                        <div class="message-section">
+                            <div class="message-label">
+                                <i class="fas fa-comment"></i> Application Message
+                            </div>
+                            <div class="message-content">
+                                {{ app.message|linebreaksbr }}
+                            </div>
+                        </div>
+
+                        <!-- Application Timestamp -->
+                        <div class="application-timestamp">
+                            <i class="fas fa-clock"></i>
+                            Applied on {{ app.created_at|date:"M d, Y \a\\t g:i A" }}
+                        </div>
+
+                        <!-- Status Section -->
+                        <div class="status-section">
+                            {% if app.status == 'pending' %}
+                                <span class="status-badge status-pending">
+                                    <i class="fas fa-clock"></i>
+                                    {{ app.get_status_display }}
+                                </span>
+                            {% elif app.status == 'accepted' %}
+                                <span class="status-badge status-accepted">
+                                    <i class="fas fa-check-circle"></i>
+                                    {{ app.get_status_display }}
+                                </span>
+                            {% else %}
+                                <span class="status-badge status-rejected">
+                                    <i class="fas fa-times-circle"></i>
+                                    {{ app.get_status_display }}
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="action-buttons">
+                            {% if app.status == 'pending' %}
+                            <form method="post" action="{% url 'update_application_status' app.id 'accepted' %}" style="flex: 1;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-accept">
+                                    <i class="fas fa-check"></i> Accept
+                                </button>
+                            </form>
+                            <form method="post" action="{% url 'update_application_status' app.id 'rejected' %}" style="flex: 1;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-reject">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="no-applications">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No applications yet</h3>
+                    <p>Applications will appear here when users apply for your tasks.</p>
+                </div>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+    <section class="footer_section">
+            <div class="container">
+                <p>&copy; <span id="displayYear"></span> All rights reserved LinkedHub.</p>
+            </div>
+        </section>
+
+    <!-- Bootstrap JS -->
+    
+    <script type="text/javascript" src="{% static 'js/my_task_applications.js' %}"></script>\
+    <script type="text/javascript" src="{% static 'js/displayYear.js' %}"></script>
+
+
+    <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+            crossorigin="anonymous"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

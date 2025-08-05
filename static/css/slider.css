@@ -1,0 +1,142 @@
+    /* Enhanced Full-Cover Slider Styles */
+.small-slider {
+    width: 100%;
+    max-width: 100%; /* Changed to full width */
+    margin: 0 auto;
+    position: relative;
+    padding: 0;
+}
+
+.slider-container {
+    width: 100%;
+    overflow: hidden;
+    
+}
+
+.slider-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    height: 150px; /* Fixed height for consistency */
+}
+
+
+.slider-slide {
+    min-width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* Middle slide special styling */
+.slider-slide:nth-child(2) {
+    background: #1a73e8; /* Blue background for middle slide */
+    color: white;
+}
+
+.slider-slide h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.slider-slide p {
+    font-size: 1.1rem;
+    max-width: 800px;
+    margin-bottom: 1.5rem;
+}
+
+.filter-section {
+    background: rgba(255,255,255,0.15);
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+}
+
+.filter-section h4 {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.filter-item {
+    margin-bottom: 15px;
+}
+
+.slider-nav {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 10;
+}
+
+.slider-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    margin: 0 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.slider-dot.active {
+    background: white;
+    transform: scale(1.2);
+}
+
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    border: none;
+    font-size: 1.5rem;
+    color: #000000;
+    transition: all 0.3s;
+}
+
+.slider-arrow:hover {
+    background: white;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.slider-arrow.prev {
+    left: 20px;
+}
+
+.slider-arrow.next {
+    right: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .slider-track {
+        height: 150px;
+    }
+    
+    .slider-slide {
+        padding: 30px 20px;
+    }
+    
+    .slider-slide h3 {
+        font-size: 1.5rem;
+    }
+    
+    .filter-section {
+        width: 95%;
+        padding: 15px;
+    }
+}

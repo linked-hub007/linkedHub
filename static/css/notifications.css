@@ -1,0 +1,88 @@
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .notification-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .notification-item {
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.2s;
+        }
+        .notification-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .unread-notification {
+            background-color: #f0f7ff;
+            border-left: 4px solid #0d6efd;
+        }
+        .notification-time {
+            color: #6c757d;
+            font-size: 0.85rem;
+        }
+        .badge-new {
+            background-color: #0d6efd;
+        }
+        .empty-notifications {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .empty-notifications i {
+            font-size: 3rem;
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+        .footer_section .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 8px 0 0 0;
+    width: 100%;
+    text-align: center;
+}
+
+.footer_section p {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 0.85rem;
+    margin: 0 auto;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+    text-align: center;
+    width: 100%;
+}
+
+.footer_section p span {
+    color: #ffd700;
+    font-weight: 500;
+}
+
+.footer_section a {
+    color: #ffd700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer_section a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+    

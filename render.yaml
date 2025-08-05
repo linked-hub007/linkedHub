@@ -1,0 +1,22 @@
+databases:
+  - name: linkedhub-db
+    databaseName: linkedhub
+    user: linkedhub_user
+
+services:
+  - type: web
+    name: linkedhub
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn linkedHub.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: DATABASE_URL
+        fromDatabase:
+          name: linkedhub-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4

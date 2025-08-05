@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Apply for tasks on LinkedHub - Submit your application with confidence" />
+    <title>Apply for Task - LinkedHub</title>
+    <link rel="icon" type="image/png" href="{% static 'images/aim.png' %}">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/apply_for_task.css' %}" rel="stylesheet" />
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header_section">
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <img src="{% static 'images/logo.png' %}" alt="LinkedHub Logo" />
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="d-flex ms-auto flex-column flex-lg-row align-items-center">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'base' %}">
+                                    Home
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'about' %}">
+                                    About
+                                </a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{% url 'about' %}">About<span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'user_directory' %}">Members</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'profile' %}">
+                                   Profile
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="application-card">
+                        <div class="card-header-custom">
+                            <h2><i class="fas fa-handshake me-2"></i>Apply for Task</h2>
+                            <p class="subtitle">Submit your application and showcase your skills</p>
+                        </div>
+                        
+                        <div class="card-body-custom">
+                            <!-- Task Preview -->
+                            <div class="task-preview">
+                                <h3 class="task-title">{{ task.title }}</h3>
+                                <div class="task-meta">
+                                    <div class="meta-item">
+                                        <i class="fas fa-indian-rupee-sign"></i>
+                                        <span><strong>Budget:</strong> ₹{{ task.budget|floatformat:2 }}</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span><strong>Location:</strong> {{ task.task_assigned_place }}</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <span><strong>Deadline:</strong> 
+                                            {% if task.deadline %}
+                                                {{ task.deadline|date:"M d, Y" }}
+                                            {% else %}
+                                                Flexible
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="fas fa-user"></i>
+                                        <span><strong>Posted by:</strong> {{ task.created_by.first_name|default:task.created_by.username }}</span>
+                                    </div>
+                                </div>
+                                <div class="task-description">
+                                    <strong>Task Description:</strong><br>
+                                    {{ task.description }}
+                                </div>
+                            </div>
+
+                            <!-- Application Tips -->
+                            <div class="tips-section">
+                                <h4 class="tips-title">
+                                    <i class="fas fa-lightbulb"></i>
+                                    Tips for a Great Application
+                                </h4>
+                                <ul class="tips-list">
+                                    <li>Clearly explain why you're the perfect fit for this task</li>
+                                    <li>Mention relevant experience or skills you possess</li>
+                                    <li>Be specific about your approach to completing the task</li>
+                                    <li>If proposing a different price, explain your reasoning</li>
+                                    <li>Show enthusiasm and professionalism in your message</li>
+                                    <li>Ask clarifying questions if needed</li>
+                                </ul>
+                            </div>
+
+                            <!-- Application Form -->
+                            <form method="post" id="applicationForm">
+                                {% csrf_token %}
+                                <div class="form-group-custom">
+                                    <label for="message" class="form-label-custom">
+                                        <i class="fas fa-pen-fancy"></i>
+                                        Your Application Message
+                                    </label>
+                                    <textarea 
+                                        class="form-control form-control-custom" 
+                                        id="message" 
+                                        name="message" 
+                                        required 
+                                        placeholder="Tell us why you're the perfect person for this task. Include your relevant experience, approach, and timeline..."
+                                        maxlength="1000"
+                                        oninput="updateCharacterCount(this)"
+                                    ></textarea>
+                                    <div class="character-count">
+                                        <span id="charCount">0</span>/1000 characters
+                                    </div>
+                                </div>
+
+                                <div class="action-buttons">
+                                    <a href="{% url 'base' %}" class="btn-custom btn-secondary-custom">
+                                        <i class="fas fa-arrow-left"></i>
+                                        Back to Tasks
+                                    </a>
+                                    <button type="submit" class="btn-custom btn-primary-custom" id="submitBtn">
+                                        <i class="fas fa-paper-plane"></i>
+                                        Submit Application
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <section class="footer_section">
+            <div class="container">
+                <p>&copy; <span id="displayYear"></span> All rights reserved LinkedHub.</p>
+            </div>
+        </section>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+     <script type="text/javascript" src="{% static 'js/apply_for_task.js' %}"></script>
+     <script text="text/javascript" src="{% static 'js/displayYear.js' %}"></script>
+
+     <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+            crossorigin="anonymous"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+ </body>
+</html>

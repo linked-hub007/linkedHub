@@ -1,0 +1,395 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- SEO & Site Metas -->
+    <meta name="keywords" content="LinkedHub, Task Marketplace, Freelance Platform, Skill-Based Matching, Instant Hiring, Remote Work, Task Posting, Live Availability, Content Writing, Graphic Design, Web Development, Social Media Tasks, Virtual Assistance, Microtasks, Project Management, Business Support, Digital Services" />
+    <meta name="description" content="LinkedHub is a real-time task collaboration platform connecting task posters with skilled doers instantly. Post tasks, match by skill, and get work done efficiently—from writing and design to development and marketing." />
+    <meta name="author" content="LinkedHub Team" />
+
+    <title>Home</title>
+    <link rel="icon" type="image/png" href="{% static 'images/aim.png' %}">
+
+    <!-- slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700|Raleway:400,700&display=swap" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/base.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/slider.css' %}" rel="stylesheet" />
+   
+    
+</head>
+
+<body>
+    <div class="hero_area">
+        <!-- header section starts -->
+        <header class="header_section">
+            <div class="container-fluid">
+                <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+                    <a class="navbar-brand" href="{% url 'home' %}">
+                        <img src="{% static 'images/logo.png' %}" alt="" />
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+                            <ul class="navbar-nav">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="{% url 'base' %}">Home <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'user_directory' %}">Members</a>
+                                </li>
+                                
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <!-- end header section -->
+    
+        <!-- Add this HTML where you want the slider to appear -->
+    <div class="small-slider">
+            <div class="slider-container">
+                <div class="slider-track">
+                    <div class="slider-slide">
+                        <h3>Slide 1</h3>
+                        <p>This is the first slide content.</p>
+                    </div>
+                <div class="slider-slide">
+                    <h3>Slide 2</h3>
+                    <p>This is the second slide content.</p>
+                </div>
+                <div class="slider-slide">
+                    <h3>Slide 3</h3>
+                    <p>This is the third slide content.</p>
+                </div>
+            </div>
+        </div>
+        <button class="slider-arrow prev">&#10094;</button>
+        <button class="slider-arrow next">&#10095;</button>
+        <div class="slider-nav">
+            <span class="slider-dot active"></span>
+            <span class="slider-dot"></span>
+            <span class="slider-dot"></span>
+        </div>
+    </div>
+        
+        
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="search-container">
+                <div class="search-header">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search for School,College..." onkeyup="filterTasks()">
+                    </div>
+                    <div class="role-buttons">
+                        <button class="role-btn active" id="taskBtn" aria-label="Task" role="button" aria-pressed="true">
+                            <i class="fas fa-bullseye" aria-hidden="true"></i>
+                            <span class="btn-label">Task</span>
+                        </button>
+                        <form method="get" action="{% url 'study_material' %}" style="display: inline;">
+                            <button type="submit" class="role-btn" id="studyBtn" aria-label="Study material" role="button" aria-pressed="false">
+                                <i class="fas fa-book" aria-hidden="true"></i>
+                                <span class="btn-label">Study material</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end search section -->
+
+        <!-- Content Container -->
+        <div class="content-container">
+            <!-- Enhanced Sidebar with Django filters -->
+            <div class="sidebar">
+                <h3><i class="fas fa-sliders-h"></i> Smart Filters</h3>
+
+                <div class="filter-group">
+                    <label><i class="fas fa-map-marker-alt"></i> Assigned Place</label>
+                    <input type="text" id="assignedPlaceFilter" placeholder="Filter by assigned place..." onkeyup="filterTasks()">
+                </div>
+                
+                <div class="filter-group">
+                    <label><i class="fas fa-indian-rupee-sign"></i> Budget Range</label>
+                    <input type="text" id="moneyFilter" placeholder="Filter by budget (e.g., 500-1000)" onkeyup="filterTasks()">
+                </div>
+                
+                <div class="filter-group">
+                    <label><i class="fas fa-flag"></i> Task Status</label>
+                    <select id="taskStatusFilter" onchange="filterTasks()">
+                        <option value="">All Status</option>
+                        <option value="posted">Posted</option>
+                        
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label><i class="fas fa-calendar-alt"></i> Deadline</label>
+                    <select id="deadlineFilter" onchange="filterTasks()">
+                        <option value="">Any Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="future">Future Dates</option>
+                    </select>
+                </div>
+                
+                <button class="reset-filters" onclick="resetFilters()">
+                    <i class="fas fa-refresh"></i> Reset All Filters
+                </button>
+            </div>
+
+            <!-- Enhanced Main Content with Django template loop -->
+            <div class="main-content">
+                <div id="task-content" class="task-grid">
+                    {% for task in tasks %}
+                    <div class="task-card" 
+                         data-status="{{ task.status }}" 
+                         data-budget="{{ task.budget }}" 
+                         data-deadline="{{ task.deadline|date:'Y-m-d' }}"
+                         data-location="{{ task.location|default:'' }}"
+                         data-task-id="{{ task.id }}">
+                        
+                        <div class="task-header">
+                            <div>
+                                <div class="task-type task-type-{{ task.category }}">{{ task.get_category_display|default:"General" }}</div>
+                                <h3 class="task-title">{{ task.title }}</h3>
+                            </div>
+                            <div class="task-budget">₹{{ task.budget|floatformat:2 }}</div>
+                        </div>
+                        
+                        <div class="location-badge">
+                            <i class="fas fa-map-marker-alt"></i>
+                            {{ task.task_assigned_place }}
+                        </div>
+                        
+                        <div class="task-description">
+                            {{ task.description }}
+                        </div>
+                        
+                        <!-- Task Creator Info -->
+                        <div class="user-card">
+                            <div class="user-avatar">
+                                {% if task.created_by.profile and task.created_by.profile.profile_picture %}
+                                    <img src="{{ task.created_by.profile.profile_picture.url }}" alt="{{ task.created_by.username }}">
+                                {% else %}
+                                    {{ task.created_by.first_name|default:task.created_by.username|default:"U"|first|upper }}
+                                {% endif %}
+                            </div>
+                            <div class="user-info-card">
+                                <div class="user-name">{{ task.created_by.first_name|default:task.created_by.username|default:"Unknown" }}</div>
+                                <div class="user-type">
+                                    <i class="fas fa-search"></i> Task Creator
+                                </div>
+                            </div>
+                            <div class="rating">
+                                <div class="stars">
+                                    {% with rating=task.created_by.profile.rating|default:0 %}
+                                        {% for i in "12345" %}
+                                            {% if forloop.counter <= rating %}★{% else %}☆{% endif %}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                                <span>{{ task.created_by.profile.rating|default:0|floatformat:1 }}/5.0</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Task Assignee Info (if assigned) -->
+                        {% if task.assigned_to %}
+                        <div class="user-card" style="background: rgba(76, 205, 196, 0.1);">
+                            <div class="user-avatar">
+                                {% if task.assigned_to.profile and task.assigned_to.profile.profile_picture %}
+                                    <img src="{{ task.assigned_to.profile.profile_picture.url }}" alt="{{ task.assigned_to.username }}">
+                                {% else %}
+                                    {{ task.assigned_to.first_name|default:task.assigned_to.username|default:"U"|first|upper }}
+                                {% endif %}
+                            </div>
+                            <div class="user-info-card">
+                                <div class="user-name">{{ task.assigned_to.first_name|default:task.assigned_to.username|default:"Unknown" }}</div>
+                                <div class="user-type">
+                                    <i class="fas fa-hammer"></i> Assigned Doer
+                                </div>
+                            </div>
+                            <div class="rating">
+                                <div class="stars">
+                                    {% with rating=task.assigned_to.profile.rating|default:0 %}
+                                        {% for i in "12345" %}
+                                            {% if forloop.counter <= rating %}★{% else %}☆{% endif %}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                                <span>{{ task.assigned_to.profile.rating|default:0|floatformat:1 }}/5.0</span>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="task-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Created</span>
+                                <span class="meta-value">{{ task.created_at|date:"M d, Y" }}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Deadline</span>
+                                <span class="meta-value">
+                                    {% if task.deadline %}
+                                        {{ task.deadline|date:"M d, Y" }}
+                                    {% else %}
+                                        No deadline
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-indicator">
+                            <div class="progress-bar">
+                                <div class="progress-fill progress-{{ task.status }}"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="status-badge status-{{ task.status }}">
+                            {% if task.status == 'posted' %}
+                                <i class="fas fa-clock"></i> Posted
+                            {% elif task.status == 'assigned' %}
+                                <i class="fas fa-user-check"></i> Assigned
+                            {% elif task.status == 'in_progress' %}
+                                <i class="fas fa-spinner fa-spin"></i> In Progress
+                            {% elif task.status == 'completed' %}
+                                <i class="fas fa-check-circle"></i> Completed
+                            {% elif task.status == 'cancelled' %}
+                                <i class="fas fa-times-circle"></i> Cancelled
+                            {% endif %}
+                        </div>
+                        
+                        <div class="task-actions">
+                            <!-- Always show creator profile link -->
+                             <a href="{% url 'public_profile' task.created_by.username %}" class="btn btn-outline">
+                                <i class="far fa-user"></i> 
+                                View Creator
+                            </a>
+                            <!-- Show assigned user profile link if assigned -->
+                             {% if task.assigned_to %}
+                             <a href="{% url 'public_profile' task.assigned_to.username %}" class="btn btn-outline">
+                                <i class="far fa-eye"></i> 
+                                View Doer
+                            </a>
+                            {% endif %}
+                            <a href="{% url 'apply_for_task' task.id %}" class="btn btn-outline">
+                                <i class="fas fa-handshake"></i>
+                                Apply Now
+                            </a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="empty-state">
+                        <i class="fas fa-tasks"></i>
+                        <h3>No Tasks Found</h3>
+                        <p>There are currently no tasks matching your criteria. Check back later or create a new task.</p>
+                        <a href="#" class="btn btn-primary" style="margin-top: 20px;">
+                            Soon New Task As Been Posted
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- About Section -->
+    <section class="info_section layout_padding2-top" id="contact">
+        <div class="social_container">
+            <div class="social_box">
+                <a href="https://facebook.com" aria-label="Facebook">
+                    <img src="{% static 'images/fb.png' %}" alt="Facebook">
+                </a>
+                <a href="https://twitter.com" aria-label="Twitter">
+                    <img src="{% static 'images/twitter.png' %}" alt="Twitter">
+                </a>
+                <a href="https://linkedin.com" aria-label="LinkedIn">
+                    <img src="{% static 'images/linkedin.png' %}" alt="LinkedIn">
+                </a>
+                <a href="https://youtube.com" aria-label="YouTube">
+                    <img src="{% static 'images/youtube.png' %}" alt="YouTube">
+                </a>
+            </div>
+        </div>
+        <div class="info_container" id="contact">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-lg-3">
+                        <h6>ABOUT US</h6>
+                        <p>Connecting tasks with real-time talent for faster, smarter collaboration.</p>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <h6>SOCIAL MEDIA</h6>
+                        <p>Follow us on social media for the latest updates, behind the scenes content, and exclusive insights into our journey.</p>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <h6>NEED HELP</h6>
+                        <p>Contact us for inquiries or support. Our team is eager and ready to assist you promptly.</p>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <h6>CONTACT US</h6>
+                        <div class="info_link-box">
+                            <a href="https://maps.app.goo.gl/uJk2eu1ELErjsJ5FA" aria-label="Location">
+                                <img src="{% static 'images/location.png' %}" alt="Location icon">
+                                <span>location</span>
+                            </a>
+                            <a href="tel:+0112345678901" aria-label="Call us">
+                                <img src="{% static 'images/call.png' %}" alt="Phone icon">
+                                <span>+91 7598077190</span>
+                            </a>
+                            <a href="mailto:demo@gmail.com" aria-label="Email us">
+                                <img src="{% static 'images/mail.png' %}" alt="Email icon">
+                                <span>linkedhub007@gmail.com</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="footer_section">
+            <div class="container">
+                <p>&copy; <span id="displayYear"></span> All rights reserved LinkedHub.</p>
+            </div>
+        </section>
+    </section>
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/slider.js' %}"></script>
+</body>
+</html>
