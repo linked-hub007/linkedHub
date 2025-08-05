@@ -162,7 +162,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Allauth settings
-SITE_ID = 3  # Changed from 3 to 1 for new deployment
+SITE_ID = 1  # Changed from 3 to 1 for new deployment
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = 'send_otp'
