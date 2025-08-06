@@ -243,7 +243,7 @@ OTP_EMAIL_SUBJECT = 'Your OTP Code'
 OTP_LOGIN_URL = '/send-otp/'
 
 # Logging configuration
-LOGGING = {
+'''LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
@@ -254,8 +254,27 @@ LOGGING = {
     'root': {
         'handlers': ['console'],
     },
-}
-
+}'''
+if not DEBUG:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+            },
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['console'],
+                'level': 'DEBUG',  # Temporary - change to INFO later
+            },
+        },
+        'root': {
+            'handlers': ['console'],
+            'level': 'DEBUG',  # Temporary
+        },
+    }
 # Cache configuration for production
 if not DEBUG:
     CACHES = {
