@@ -2,6 +2,7 @@ databases:
   - name: linkedhub-db
     databaseName: linkedhub
     user: linkedhub_user
+    
 
 services:
   - type: web
