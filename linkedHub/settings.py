@@ -20,17 +20,11 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 #-------------------------------------------------------------------------------------------------------
-ALLOWED_HOSTS = []
-if DEBUG:
-    # Development hosts
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-else:
-    # Production hosts
-    ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='linkedhub-0ki0.onrender.com', cast=Csv())
-    # Also allow Render's internal hostname if available
-    render_hostname = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-    if render_hostname and render_hostname not in ALLOWED_HOSTS:
-        ALLOWED_HOSTS.append(render_hostname)
+PRODUCTION_HOSTS = [
+    'linkedhub-0ki0.onrender.com',
+    os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')  # Render's internal host
+]
+ALLOWED_HOSTS = PRODUCTION_HOSTS if not DEBUG else ['localhost', '127.0.0.1']
 #-------------------------------------------------------------------------------------------------------
 # Security settings for production
 if not DEBUG:
