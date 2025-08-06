@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'django.contrib.sites',
+    'django.contrib.sites',
     # Django OTP apps
     'django_otp',
     'django_otp.plugins.otp_email',
@@ -162,7 +162,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Allauth settings
-SITE_ID = 3  # Changed from 3 to 1 for new deployment
+SITE_ID = 1  # Changed from 3 to 1 for new deployment
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = 'send_otp'
