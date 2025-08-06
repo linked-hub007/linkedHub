@@ -158,7 +158,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # WhiteNoise configuration
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Media files
 MEDIA_URL = '/images/'
@@ -177,7 +177,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Allauth settings
-SITE_ID = 1  # Changed from 3 to 1 for new deployment
+SITE_ID = 4  # Changed from 3 to 1 for new deployment
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = 'send_otp'
