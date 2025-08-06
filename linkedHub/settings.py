@@ -25,6 +25,7 @@ PRODUCTION_HOSTS = [
     os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')  # Render's internal host
 ]
 ALLOWED_HOSTS = PRODUCTION_HOSTS if not DEBUG else ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = [h for h in ALLOWED_HOSTS if h] 
 #-------------------------------------------------------------------------------------------------------
 # Security settings for production
 if not DEBUG:
