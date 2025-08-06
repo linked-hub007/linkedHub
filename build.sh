@@ -10,7 +10,15 @@ python manage.py migrate --noinput
 echo "Setting up site..."
 python manage.py shell -c "
 from django.contrib.sites.models import Site
-Site.objects.get_or_create(pk=1, defaults={'domain': 'linkedhub-0ki0.onrender.com', 'name': 'LinkedHub'})
+site, created = Site.objects.get_or_create(
+    id=1,
+    defaults={'domain': 'linkedhub-0ki0.onrender.com', 'name': 'LinkedHub'}
+)
+if not created:
+    site.domain = 'linkedhub-0ki0.onrender.com'
+    site.name = 'LinkedHub'
+    site.save()
+print('Site configured successfully')
 "
 
 echo "Collecting static files..."
