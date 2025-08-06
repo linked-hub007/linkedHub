@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
-# exit on error
 set -o errexit
 
-# Upgrade pip first
-pip install --upgrade pip
-
-# Install requirements
+echo "Installing requirements..."
 pip install -r requirements.txt
 
-# Collect static files
-python manage.py collectstatic --no-input
+echo "Running migrations..."
+python manage.py migrate --noinput
 
-# Run migrations
-python manage.py migrate
+echo "Setting up site..."
+python manage.py shell -c "
+from django.contrib.sites.models import Site
+Site.objects.get_or_create(pk=1, defaults={'domain': 'linkedhub-0ki0.onrender.com', 'name': 'LinkedHub'})
+"
+
+echo "Collecting static files..."
+python manage.py collectstatic --noinput
+
+echo "Build complete!"

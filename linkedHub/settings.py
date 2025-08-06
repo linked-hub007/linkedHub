@@ -155,7 +155,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+static_dir = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [static_dir] if os.path.exists(static_dir) else []
 
 # WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
@@ -177,7 +179,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Allauth settings
-SITE_ID = 4  # Changed from 3 to 1 for new deployment
+SITE_ID = 1  # Changed from 3 to 1 for new deployment
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = 'send_otp'
