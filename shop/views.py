@@ -40,7 +40,7 @@ def home(request):
 def about(request):
     """About page view."""
     return render(request, 'shop/about.html')
-
+@login_required
 def base(request):
     """Base page view with tasks data."""
     try:
