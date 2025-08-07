@@ -107,10 +107,13 @@ TEMPLATES = [{
 WSGI_APPLICATION = 'linkedHub.wsgi.application'
 
 # Database - Using dj-database-url for Render compatibility
-if 'DATABASE_URL' in os.environ:
+# Database - Using dj-database-url for Render compatibility
+DATABASE_URL = config('DATABASE_URL', default=None)
+
+if DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.config(
-            default=os.environ['DATABASE_URL'],
+            default=DATABASE_URL,
             conn_max_age=600,
             conn_health_checks=True,
             ssl_require=True,  # Add SSL requirement
