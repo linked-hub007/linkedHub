@@ -22,6 +22,11 @@ services:
         value: 4
       - key: DEBUG
         value: false
+        # Add these new variables:
+      - key: DISABLE_COLLECTSTATIC
+        value: 0
+      - key: WHITENOISE_MANIFEST_STRICT
+        value: "False"
       # Add email configuration
       - key: EMAIL_BACKEND
         value: django.core.mail.backends.smtp.EmailBackend
