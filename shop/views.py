@@ -674,10 +674,16 @@ def view_material(request, material_id):
             category=material.category
         ).exclude(id=material.id).order_by('-created_at')[:4]
         
+        # Safe file size calculation
+        try:
+            file_size = material.file.size if material.file else 0
+        except (FileNotFoundError, OSError):
+            file_size = 0
+        
         context = {
             'material': material,
             'file_type': material.get_file_extension(),
-            'file_size': material.file.size if material.file else 0,
+            'file_size': file_size,
             'file_url': material.file.url if material.file else '',
             'total_views': material.views,
             'related_materials': related_materials,
@@ -774,7 +780,6 @@ def ajax_get_material_stats(request, material_id):
             'success': False,
             'error': 'An error occurred while processing your request'
         }, status=500)
-
 #-----------------------------------------------------------------------
 @login_required
 def apply_for_task(request, task_id):
