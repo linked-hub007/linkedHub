@@ -169,7 +169,12 @@ else:
 '''
 # WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+# Enable gzip and cache support
+#-----------------------------------------------------------------------------------
+WHITENOISE_MAX_AGE = 31536000 if not DEBUG else 0  # 1 year for production
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_MANIFEST_STRICT = False
+#-------------------------------------------------------------------------------
 # Add static file finders
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -292,4 +297,10 @@ if not DEBUG:
             'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
             'LOCATION': 'cache_table',
         }
+    }
+    #---------------
+if DEBUG:
+    LOGGING['loggers']['whitenoise'] = {
+        'level': 'DEBUG',
+        'handlers': ['console'],
     }

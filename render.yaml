@@ -8,7 +8,7 @@ services:
     name: linkedhub
     env: python
     buildCommand: "./build.sh"
-    startCommand: "gunicorn linkedHub.wsgi:application --bind 0.0.0.0:$PORT --workers 4 --timeout 120"
+    startCommand: "gunicorn linkedHub.wsgi:application --bind 0.0.0.0:$PORT --workers 4 --timeout 120 --access-logfile -"
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
@@ -22,12 +22,13 @@ services:
         value: 4
       - key: DEBUG
         value: false
-        # Add these new variables:
       - key: DISABLE_COLLECTSTATIC
         value: 0
       - key: WHITENOISE_MANIFEST_STRICT
         value: "False"
-      # Add email configuration
+      - key: WHITENOISE_MAX_AGE
+        value: "31536000"  # 1 year cache
+      # Email configuration
       - key: EMAIL_BACKEND
         value: django.core.mail.backends.smtp.EmailBackend
       - key: EMAIL_HOST
@@ -36,8 +37,7 @@ services:
         value: 587
       - key: EMAIL_USE_TLS
         value: true
-      # Add these as secrets in Render dashboard:
-      # - key: EMAIL_HOST_USER
-      #   value: your-email@gmail.com
-      # - key: EMAIL_HOST_PASSWORD
-      #   value: your-app-password
+    # Add these as secrets in Render dashboard
+    # secrets:
+    #   - key: EMAIL_HOST_USER
+    #   - key: EMAIL_HOST_PASSWORD
