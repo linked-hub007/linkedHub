@@ -687,7 +687,7 @@ def view_material(request, material_id):
     except Exception as e:
         logger.error(f"Error in view_material: {str(e)}", exc_info=True)
         messages.error(request, "Error loading material. Please try again.")
-        return render(request, 'shop/error.html', {
+        return render(request, 'shop/error/error.html', {
             'error_message': 'Material not found or unavailable.'
         })
 
