@@ -654,6 +654,7 @@ def study_material(request):
             'current_sort': 'latest',
             'total_count': 0,
         })
+
 @login_required
 @require_GET
 def view_material(request, material_id):
@@ -674,10 +675,16 @@ def view_material(request, material_id):
             category=material.category
         ).exclude(id=material.id).order_by('-created_at')[:4]
         
+        # Safe file size calculation
+        try:
+            file_size = material.file.size if material.file else 0
+        except FileNotFoundError:
+            file_size = 0
+        
         context = {
             'material': material,
             'file_type': material.get_file_extension(),
-            'file_size': material.file.size if material.file else 0,
+            'file_size': file_size,
             'file_url': material.file.url if material.file else '',
             'total_views': material.views,
             'related_materials': related_materials,
