@@ -27,10 +27,6 @@ from django.utils import timezone
 from datetime import timedelta
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import logging
-
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.cache import cache_control
-
 #----------------------------------------------------------------
 logger = logging.getLogger(__name__)
 User = get_user_model() 
@@ -658,7 +654,6 @@ def study_material(request):
             'current_sort': 'latest',
             'total_count': 0,
         })
-
 @login_required
 @require_GET
 def view_material(request, material_id):
@@ -679,16 +674,10 @@ def view_material(request, material_id):
             category=material.category
         ).exclude(id=material.id).order_by('-created_at')[:4]
         
-        # Safe file size calculation
-        try:
-            file_size = material.file.size if material.file else 0
-        except FileNotFoundError:
-            file_size = 0
-        
         context = {
             'material': material,
             'file_type': material.get_file_extension(),
-            'file_size': file_size,
+            'file_size': material.file.size if material.file else 0,
             'file_url': material.file.url if material.file else '',
             'total_views': material.views,
             'related_materials': related_materials,
@@ -1241,5 +1230,3 @@ def user_directory(request):
 def terms(request):
     """Terms and Conditions page view."""
     return render(request, 'shop/terms/terms.html')
-
-#---------------------------------------------------
