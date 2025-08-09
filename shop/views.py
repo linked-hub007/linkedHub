@@ -4,6 +4,8 @@ import mimetypes
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.conf import settings
+from django.http import HttpResponse, Http404
 from django.http import JsonResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
@@ -1252,16 +1254,31 @@ def serve_media(request, path):
     This will fix the 404 errors for your PDF files
     """
     try:
+        # Debug logging
+        print(f"Attempting to serve media file: {path}")
+        print(f"MEDIA_ROOT: {settings.MEDIA_ROOT}")
+        
         # Security check - prevent directory traversal attacks
         if '..' in path or path.startswith('/'):
+            print(f"Invalid path detected: {path}")
             raise Http404("Invalid path")
         
         # Construct full file path
         file_path = os.path.join(settings.MEDIA_ROOT, path)
+        print(f"Full file path: {file_path}")
         
         # Check if file exists
         if not os.path.exists(file_path):
-            print(f"File not found: {file_path}")  # This will help with debugging
+            print(f"File not found at: {file_path}")
+            
+            # List directory contents for debugging
+            dir_path = os.path.dirname(file_path)
+            if os.path.exists(dir_path):
+                files = os.listdir(dir_path)
+                print(f"Files in directory {dir_path}: {files}")
+            else:
+                print(f"Directory does not exist: {dir_path}")
+            
             raise Http404("File not found")
             
         # Additional security check - ensure file is within media root
@@ -1269,14 +1286,18 @@ def serve_media(request, path):
             real_media_root = os.path.realpath(settings.MEDIA_ROOT)
             real_file_path = os.path.realpath(file_path)
             if not real_file_path.startswith(real_media_root):
+                print(f"Security violation: file outside media root")
                 raise Http404("Invalid path")
-        except (ValueError, OSError):
+        except (ValueError, OSError) as e:
+            print(f"Path security check failed: {e}")
             raise Http404("Invalid path")
         
         # Determine content type
         content_type, _ = mimetypes.guess_type(file_path)
         if content_type is None:
             content_type = 'application/octet-stream'
+        
+        print(f"Content type: {content_type}")
         
         # Read and serve the file
         try:
@@ -1294,6 +1315,7 @@ def serve_media(request, path):
             else:
                 response['Content-Disposition'] = f'attachment; filename="{filename}"'
             
+            print(f"Successfully serving file: {filename}")
             return response
             
         except IOError as e:
@@ -1302,4 +1324,6 @@ def serve_media(request, path):
             
     except Exception as e:
         print(f"Error serving media file {path}: {e}")
+        import traceback
+        traceback.print_exc()
         raise Http404("File not found")
