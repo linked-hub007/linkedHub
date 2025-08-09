@@ -198,7 +198,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Allauth settings - Fixed SITE_ID
-SITE_ID = 1
+SITE_ID = 2
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = 'send_otp'
