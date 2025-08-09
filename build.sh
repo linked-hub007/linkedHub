@@ -8,13 +8,6 @@ echo "Creating static directory structure..."
 mkdir -p static/css static/js static/images
 mkdir -p staticfiles
 
-# Ensure static directory exists and has the right structure
-echo "Verifying static directory structure..."
-if [ ! -d "static" ]; then
-    echo "Creating static directory..."
-    mkdir -p static/css static/js static/images
-fi
-
 # Copy any existing static files from app directories (like shop/static/)
 echo "Checking for app static files..."
 find . -name "static" -type d -not -path "./staticfiles*" -not -path "./static" | while read dir; do
@@ -25,11 +18,9 @@ find . -name "static" -type d -not -path "./staticfiles*" -not -path "./static" 
     fi
 done
 
-# Debug: List static directory contents before collection
-echo "Static directory contents before collection:"
+# Also check for any CSS/JS files in the main static directory
+echo "Current static directory contents:"
 ls -la static/ || echo "Static directory is empty"
-echo "Static subdirectories:"
-find static/ -type f | head -20 || echo "No files found in static directory"
 
 echo "Making migrations for core Django apps..."
 python manage.py migrate contenttypes --noinput
@@ -76,23 +67,16 @@ except Exception as e:
     )
 EOF
 
-echo "Collecting static files with detailed output..."
+# Debug: List static directory contents before collection
+echo "Static directory contents before collection:"
+find static/ -type f | head -10 || echo "No files found in static directory"
+
+echo "Collecting static files..."
 python manage.py collectstatic --noinput --clear --verbosity=2
 
 # Debug: List staticfiles directory after collection
 echo "Staticfiles directory contents after collection:"
-echo "Total files in staticfiles:"
-find staticfiles/ -type f | wc -l || echo "Cannot count files"
-echo "Sample files:"
-find staticfiles/ -name "*.css" | head -5 || echo "No CSS files found"
-find staticfiles/ -name "*.js" | head -5 || echo "No JS files found"
-find staticfiles/ -name "*.png" | head -5 || echo "No PNG files found"
-
-# Verify specific files that were failing
-echo "Checking for problematic files:"
-ls -la staticfiles/css/index.css 2>/dev/null && echo "✓ index.css found" || echo "✗ index.css missing"
-ls -la staticfiles/js/displayYear.js 2>/dev/null && echo "✓ displayYear.js found" || echo "✗ displayYear.js missing"
-ls -la staticfiles/images/hero-logo.png 2>/dev/null && echo "✓ hero-logo.png found" || echo "✗ hero-logo.png missing"
+find staticfiles/ -type f | head -10 || echo "No files found in staticfiles directory"
 
 echo "Creating superuser..."
 python manage.py shell << 'EOF'

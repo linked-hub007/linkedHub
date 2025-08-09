@@ -22,12 +22,12 @@ services:
         value: 4
       - key: DEBUG
         value: false
-      # Static files configuration
+        # Add these new variables:
       - key: DISABLE_COLLECTSTATIC
         value: 0
       - key: WHITENOISE_MANIFEST_STRICT
         value: "False"
-      # Email configuration
+      # Add email configuration
       - key: EMAIL_BACKEND
         value: django.core.mail.backends.smtp.EmailBackend
       - key: EMAIL_HOST
