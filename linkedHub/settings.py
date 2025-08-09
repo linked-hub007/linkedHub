@@ -106,7 +106,6 @@ TEMPLATES = [{
 WSGI_APPLICATION = 'linkedHub.wsgi.application'
 
 # Database - Using dj-database-url for Render compatibility
-# Database - Using dj-database-url for Render compatibility
 DATABASE_URL = config('DATABASE_URL', default=None)
 
 if DATABASE_URL:
@@ -153,24 +152,24 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# Static files (CSS, JavaScript, Images) - FIXED CONFIGURATION
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-'''# Ensure static directory exists
-static_dir = os.path.join(BASE_DIR, 'static')
-if os.path.exists(static_dir):
-    STATICFILES_DIRS = [static_dir]
-else:
-    STATICFILES_DIRS = []
-'''
-# WhiteNoise configuration
+# Only include existing directories in STATICFILES_DIRS
+STATICFILES_DIRS = []
+static_dir = BASE_DIR / 'static'
+if static_dir.exists():
+    STATICFILES_DIRS.append(static_dir)
+
+# WhiteNoise configuration - CORRECTED
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Add static file finders
+# WhiteNoise settings for better error handling
+WHITENOISE_MANIFEST_STRICT = False
+WHITENOISE_SKIP_COMPRESS_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'zip', 'gz', 'tgz', 'bz2', 'tbz', 'xz', 'br']
+
+# Static file finders
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -178,7 +177,7 @@ STATICFILES_FINDERS = [
 
 # Media files
 MEDIA_URL = '/images/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
