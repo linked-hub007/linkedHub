@@ -182,9 +182,9 @@ STATICFILES_FINDERS = [
 ]
 
 # Media files
-MEDIA_URL = '/media/'
+MEDIA_URL = '/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-#---
+
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -298,7 +298,6 @@ if not DEBUG:
             'LOCATION': 'cache_table',
         }
     }
-    SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
     #---------------
 if DEBUG:
     LOGGING['loggers']['whitenoise'] = {
