@@ -1,3 +1,7 @@
+
+# shop/urls.py - Updated with media serving
+from django.urls import path, include, re_path
+from django.conf import settings
 # shop/urls.py
 from django.urls import path, include
 from . import views
@@ -84,3 +88,8 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
+
+if not settings.DEBUG:
+    urlpatterns += [
+       re_path(r'^media/(?P<path>.*)$', views.serve_media, name='serve_media'),
+    ]

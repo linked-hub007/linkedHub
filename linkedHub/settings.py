@@ -184,6 +184,12 @@ STATICFILES_FINDERS = [
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#---
+os.makedirs(MEDIA_ROOT, exist_ok=True)
+
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
+FILE_UPLOAD_PERMISSIONS = 0o644
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -298,6 +304,7 @@ if not DEBUG:
             'LOCATION': 'cache_table',
         }
     }
+    SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
     #---------------
 if DEBUG:
     LOGGING['loggers']['whitenoise'] = {

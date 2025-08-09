@@ -27,6 +27,10 @@ from django.utils import timezone
 from datetime import timedelta
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import logging
+
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.cache import cache_control
+
 #----------------------------------------------------------------
 logger = logging.getLogger(__name__)
 User = get_user_model() 
@@ -1237,3 +1241,65 @@ def user_directory(request):
 def terms(request):
     """Terms and Conditions page view."""
     return render(request, 'shop/terms/terms.html')
+
+#---------------------------------------------------
+# Add this function anywhere in your views.py file
+@csrf_exempt
+@cache_control(max_age=3600, public=True)
+def serve_media(request, path):
+    """
+    Custom media file serving view for production
+    This will fix the 404 errors for your PDF files
+    """
+    try:
+        # Security check - prevent directory traversal attacks
+        if '..' in path or path.startswith('/'):
+            raise Http404("Invalid path")
+        
+        # Construct full file path
+        file_path = os.path.join(settings.MEDIA_ROOT, path)
+        
+        # Check if file exists
+        if not os.path.exists(file_path):
+            print(f"File not found: {file_path}")  # This will help with debugging
+            raise Http404("File not found")
+            
+        # Additional security check - ensure file is within media root
+        try:
+            real_media_root = os.path.realpath(settings.MEDIA_ROOT)
+            real_file_path = os.path.realpath(file_path)
+            if not real_file_path.startswith(real_media_root):
+                raise Http404("Invalid path")
+        except (ValueError, OSError):
+            raise Http404("Invalid path")
+        
+        # Determine content type
+        content_type, _ = mimetypes.guess_type(file_path)
+        if content_type is None:
+            content_type = 'application/octet-stream'
+        
+        # Read and serve the file
+        try:
+            with open(file_path, 'rb') as f:
+                file_data = f.read()
+                
+            response = HttpResponse(file_data, content_type=content_type)
+            response['Content-Length'] = len(file_data)
+            response['Cache-Control'] = 'public, max-age=3600'
+            
+            # Set appropriate Content-Disposition
+            filename = os.path.basename(file_path)
+            if content_type == 'application/pdf' or content_type.startswith('image/'):
+                response['Content-Disposition'] = f'inline; filename="{filename}"'
+            else:
+                response['Content-Disposition'] = f'attachment; filename="{filename}"'
+            
+            return response
+            
+        except IOError as e:
+            print(f"IO Error reading file {file_path}: {e}")
+            raise Http404("Error reading file")
+            
+    except Exception as e:
+        print(f"Error serving media file {path}: {e}")
+        raise Http404("File not found")
