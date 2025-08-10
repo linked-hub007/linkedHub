@@ -9,53 +9,6 @@ body {
     overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
-/* Header Adjustments for Mobile */
-.header_section {
-    padding: 10px 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: rgb(0, 0, 0);
-    border-bottom: 1px solid #dee2e6;
-}
-
-.navbar-brand img {
-    max-height: 30px;
-}
-
-.navbar {
-    padding: 0.5rem 1rem;
-}
-
-/* Notification Badge Styles */
-.notification-badge {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: #dc3545;
-    color: white;
-    border-radius: 50%;
-    font-size: 0.6rem;
-    min-width: 16px;
-    height: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    border: 2px solid #fff;
-}
-
-.notification-dot {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    background-color: #dc3545;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    border: 1px solid #fff;
-}
-
 /* Main Layout for Mobile */
 .main-layout {
     display: flex;
