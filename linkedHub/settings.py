@@ -181,9 +181,15 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-# Media files
+'''# Media files
 MEDIA_URL = '/images/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')'''
+
+
+# Add to settings.py
+SUPABASE_URL = config('SUPABASE_URL')  # e.g. "https://xyzabc.supabase.co"
+SUPABASE_KEY = config('SUPABASE_KEY')  # Your anon/public key
+SUPABASE_BUCKET = "linkedhub"  # Your bucket name
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
