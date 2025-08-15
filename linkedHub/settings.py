@@ -52,6 +52,7 @@ PASSWORD_HASHERS = [
 #--------------------------------------------------------------
 # Application definition
 INSTALLED_APPS = [
+    'storages',
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -72,6 +73,7 @@ INSTALLED_APPS = [
     
     # Local apps
     'shop',
+
 ]
 
 MIDDLEWARE = [
@@ -160,13 +162,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-'''# Ensure static directory exists
-static_dir = os.path.join(BASE_DIR, 'static')
-if os.path.exists(static_dir):
-    STATICFILES_DIRS = [static_dir]
-else:
-    STATICFILES_DIRS = []
-'''
+
 # WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Enable gzip and cache support
@@ -180,15 +176,25 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
-# Media files
+
+'''# Media files
 MEDIA_URL = '/images/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')'''
 
-
-
+if not DEBUG:
+    # Supabase configuration
+    SUPABASE_URL = config('SUPABASE_URL', default='')
+    SUPABASE_KEY = config('SUPABASE_KEY', default='')
+    SUPABASE_BUCKET = config('SUPABASE_BUCKET', default='media')
+    
+    # Use custom storage backend (you'll need to create this)
+    DEFAULT_FILE_STORAGE = 'shop.storage_backends.SupabaseStorage'
+    
+    # Media URL will point to Supabase
+    MEDIA_URL = f'{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_BUCKET}/'
 
 # Default primary key field type
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+#DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom user model
 AUTH_USER_MODEL = 'shop.CustomUser'
