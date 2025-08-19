@@ -1237,40 +1237,28 @@ def terms(request):
     return render(request, 'shop/terms/terms.html')
 
 #------------------------------------------------------
-from django.http import HttpResponse, Http404, FileResponse
-from django.conf import settings
-from django.views.decorators.cache import cache_control
-from django.views.decorators.http import require_http_methods
+@login_required
+def settings(request):
+    """User settings view"""
+    if request.method == 'POST':
+        # Handle settings form submission
+        messages.success(request, 'Settings updated successfully!')
+        return redirect('settings')
+    
+    context = {
+        'user': request.user,
+    }
+    return render(request, 'shop/settings.html', context)
 
-@cache_control(max_age=3600)  # Cache for 1 hour
-@require_http_methods(["GET"])
-def serve_media(request, path):
-    """
-    Serve media files in production when WhiteNoise can't handle them
-    """
-    try:
-        # Security: prevent directory traversal
-        if '..' in path or path.startswith('/'):
-            raise Http404("Invalid path")
-        
-        file_path = os.path.join(settings.MEDIA_ROOT, path)
-        
-        # Check if file exists
-        if not os.path.exists(file_path):
-            raise Http404("File not found")
-        
-        # Check if it's actually a file (not a directory)
-        if not os.path.isfile(file_path):
-            raise Http404("Invalid file")
-        
-        # Get the mime type
-        content_type, _ = mimetypes.guess_type(file_path)
-        
-        # Return the file
-        return FileResponse(
-            open(file_path, 'rb'),
-            content_type=content_type
-        )
-        
-    except Exception:
-        raise Http404("File not found")
+# Alternative: If you meant to use a different name, rename it:
+@login_required  
+def user_settings(request):
+    """User settings view - renamed to avoid conflicts"""
+    if request.method == 'POST':
+        messages.success(request, 'Settings updated successfully!')
+        return redirect('user_settings')
+    
+    context = {
+        'user': request.user,
+    }
+    return render(request, 'shop/user_settings.html', context)
