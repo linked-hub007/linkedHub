@@ -1237,28 +1237,3 @@ def terms(request):
     return render(request, 'shop/terms/terms.html')
 
 #------------------------------------------------------
-@login_required
-def settings(request):
-    """User settings view"""
-    if request.method == 'POST':
-        # Handle settings form submission
-        messages.success(request, 'Settings updated successfully!')
-        return redirect('settings')
-    
-    context = {
-        'user': request.user,
-    }
-    return render(request, 'shop/settings.html', context)
-
-# Alternative: If you meant to use a different name, rename it:
-@login_required  
-def user_settings(request):
-    """User settings view - renamed to avoid conflicts"""
-    if request.method == 'POST':
-        messages.success(request, 'Settings updated successfully!')
-        return redirect('user_settings')
-    
-    context = {
-        'user': request.user,
-    }
-    return render(request, 'shop/user_settings.html', context)
