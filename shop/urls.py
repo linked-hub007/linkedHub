@@ -18,6 +18,7 @@ urlpatterns = [
     path('settings/', views.settings, name='settings'),   
     path('logout/', views.logout_page, name='logout'),
     
+    path(r'^images/(?P<path>.*)$', views.serve_media, name='serve_media'),
     # User directory
     path('users/', views.user_directory, name='user_directory'),
 

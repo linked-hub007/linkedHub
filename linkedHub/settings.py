@@ -176,6 +176,11 @@ WHITENOISE_MAX_AGE = 31536000 if not DEBUG else 0  # 1 year for production
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_MANIFEST_STRICT = False
 #-------------------------------------------------------------------------------
+if not DEBUG:
+    # WhiteNoise doesn't serve media files by default
+    # You need to handle media files separately
+    WHITENOISE_USE_FINDERS = True
+    WHITENOISE_AUTOREFRESH = True
 # Add static file finders
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
