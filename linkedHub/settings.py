@@ -100,13 +100,13 @@ TEMPLATES = [{
             'django.template.context_processors.request',
             'django.contrib.auth.context_processors.auth',
             'django.contrib.messages.context_processors.messages',
-            'shop.context_processors.site_settings',  # Add this if you need custom context
         ],
     },
 }]
 
 WSGI_APPLICATION = 'linkedHub.wsgi.application'
 
+# Database - Using dj-database-url for Render compatibility
 # Database - Using dj-database-url for Render compatibility
 DATABASE_URL = config('DATABASE_URL', default=None)
 
@@ -158,18 +158,33 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Static files directories
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-
+'''# Ensure static directory exists
+static_dir = os.path.join(BASE_DIR, 'static')
+if os.path.exists(static_dir):
+    STATICFILES_DIRS = [static_dir]
+else:
+    STATICFILES_DIRS = []
+'''
 # WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Enable gzip and cache support
+#-----------------------------------------------------------------------------------
+WHITENOISE_MAX_AGE = 31536000 if not DEBUG else 0  # 1 year for production
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_MANIFEST_STRICT = False
+#-------------------------------------------------------------------------------
+# Add static file finders
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
 
-# Media files (user uploaded content)
-MEDIA_URL = '/media/'
+# Media files
+MEDIA_URL = '/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -283,7 +298,7 @@ if not DEBUG:
             'LOCATION': 'cache_table',
         }
     }
-
+    #---------------
 if DEBUG:
     LOGGING['loggers']['whitenoise'] = {
         'level': 'DEBUG',
