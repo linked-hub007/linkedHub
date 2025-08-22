@@ -180,11 +180,19 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
+# Add this to your settings.py
+if not DEBUG:
+    # Enable serving media files through Django in production
+    MEDIA_URL = '/images/'
+    # Note: This is not recommended for high-traffic sites
+    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+    # Add this to allow WhiteNoise to serve media files
+    WHITENOISE_ROOT = os.path.join(BASE_DIR, 'media')
 # Media files
-MEDIA_URL = '/images/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+#DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom user model
 AUTH_USER_MODEL = 'shop.CustomUser'
