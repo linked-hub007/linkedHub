@@ -19,7 +19,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 #-------------------------------------------------------------------------------------------------------
 PRODUCTION_HOSTS = [
-    'linkedhub-9k18.onrender.com',  # Fixed the hostname from your logs
+    'linkedhub-0ki0.onrender.com',
     os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')  # Render's internal host
 ]
 ALLOWED_HOSTS = PRODUCTION_HOSTS if not DEBUG else ['localhost', '127.0.0.1']
@@ -107,6 +107,7 @@ TEMPLATES = [{
 WSGI_APPLICATION = 'linkedHub.wsgi.application'
 
 # Database - Using dj-database-url for Render compatibility
+# Database - Using dj-database-url for Render compatibility
 DATABASE_URL = config('DATABASE_URL', default=None)
 
 if DATABASE_URL:
@@ -160,7 +161,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-
+'''# Ensure static directory exists
+static_dir = os.path.join(BASE_DIR, 'static')
+if os.path.exists(static_dir):
+    STATICFILES_DIRS = [static_dir]
+else:
+    STATICFILES_DIRS = []
+'''
 # WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Enable gzip and cache support
@@ -296,7 +303,7 @@ if not DEBUG:
             'LOCATION': 'cache_table',
         }
     }
-
+    #---------------
 if DEBUG:
     LOGGING['loggers']['whitenoise'] = {
         'level': 'DEBUG',
